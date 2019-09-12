@@ -1,7 +1,5 @@
 ### Thatch effects ###
 rm(list = ls())
-## paper idea: lasting effects of thatch... the ghost of competition past is more important than present competition for native annual forbs
-
 #### Load Libraries ####
 
 library(plyr)
@@ -12,16 +10,8 @@ library(ggplot2)
 library(lme4)
 library(lmerTest)
 library(reshape2)
-
-#### Load R data files ####
-
-# Bootstrapped parameters
-load("Data/Analysis-Output/Bootstrapped-params/BS-F.Rdata")
-load("Data/Analysis-Output/Bootstrapped-params/BS-g.Rdata")
-load("Data/Analysis-Output/Bootstrapped-params/BS-m.Rdata")
-
-# Simulated Lambda
-load("Data/Analysis-Output/Bootstrapped-params/BS-L.Rdata")
+library(emmeans)
+library(multcomp)
 
 #### Process Data ####
 
@@ -53,7 +43,7 @@ flo.seed <- read.csv("Data/Post-Processing/final-flo-seed.csv")
 flo.seed <- filter(flo.seed, Year == 2017, Treat.Code == "C")
 flo.seed$Subplot <- factor(flo.seed$Subplot, levels = c("No Grass", "Grass", "Thatch"))
 flo.seed$n.seed.ind <- flo.seed$n.seed.ind * flo.seed$p.viable # adjust for viability
-flo.seed <- flo.seed[,-16]
+#flo.seed <- flo.seed[,-16]
 flo.seed$Subplot <- factor(flo.seed$Subplot, levels = c("No Grass", "Grass", "Thatch"))
 
 ###
@@ -80,67 +70,176 @@ PCA.s13 <- prcomp(sla.13[, c(2, 3)], scale = T) # Full SLA + D13C field
 trait.w$PC.G <- PCA.G$x[,1] 
 trait.w$PC.F <- PCA.F$x[,1] 
 trait.w$PC.s13 <- PCA.s13$x[c(2,3,5,6,7,9),1] 
+trait.w$strat <- ifelse(trait.w$PC.F > 0, "ST", "SA")
 
 # merge datasets with traits
-dem <- merge(dem, trait.w[,c(1,23:25)], by = "Species")
-sb <- merge(sb, trait.w[,c(1,23:25)], by = "Species")
-flo.seed <- merge(flo.seed, trait.w[,c(1,23:25)], by = "Species")
+dem <- merge(dem, trait.w[,c(1,26)], by = "Species")
+sb <- merge(sb, trait.w[,c(1,26)], by = "Species")
+flo.seed <- merge(flo.seed, trait.w[,c(1,26)], by = "Species")
 
 rm(PCA.F, PCA.G, PCA.s13, sla.13, grass)
 
 # merge datasets with grass cover
 #dem <- merge(dem, grass, all.x = T)
 
+
 #### Prep: Plot-level Lambda ####
 
-full <- merge(dem, flo.seed[,-c(6:13)], by = c("Year","Plot","Treat.Code", "Subplot","Species", "PC.F", "PC.G", "PC.s13"), all = T)
+# full <- merge(dem, flo.seed[,-c(6:13)], by = c("Year","Plot","Treat.Code", "Subplot", "Species", "strat"), all = T)
+# 
+# full <- merge(full, sb, by = c("Year","Plot","Treat.Code","Species","strat"), all.x = T)
+# 
+# full$p.germ <- full$germ.tot/full$viable
+# 
+# # calculate L according: L = s*(1-g) + g*(1-m)*F
+# full$L.sb <- full$p.surv*(1-full$p.germ)
+# full$L.sa <- full$p.germ * (1 -  full$p.mort)
+# full$L.seeds <- full$L.sa * full$n.seed.ind
+# full$L <- full$L.sb + full$L.seeds
+# full$L <- ifelse(full$L.sa == 0, full$L.sb, full$L)
+# full$L <- ifelse(full$p.germ == 0, full$L.sb, full$L)
 
-full <- merge(full, sb, by = c("Year","Plot","Treat.Code","Species","PC.F", "PC.G", "PC.s13"), all.x = T)
+full <- merge(dem, flo.seed[,-c(6:9,11:12)], by = c("Year","Plot","Treat.Code", "Subplot","Species", "strat"), all = T)
 
-full$p.germ <- full$germ.tot/full$viable
+# replace NAs in n.seed.inf with species averages
+flo.seed.sum <- summarySE(flo.seed, measurevar = "avg.seed.inf", groupvars = "Species", na.rm = T)
+
+for(j in unique(full[is.na(full$avg.seed.inf),]$Species)) {
+    full[is.na(full$avg.seed.inf) & full$Species == j,]$avg.seed.inf <- flo.seed.sum[flo.seed.sum$Species == j,]$avg.seed.inf
+  }
+
+# replace NAs in avg.flo with species averages
+flo.seed.sum <- summarySE(flo.seed, measurevar = "avg.flo", groupvars = "Species", na.rm = T)
+
+for(j in unique(full[is.na(full$avg.flo),]$Species)) {
+    full[is.na(full$avg.flo) & full$Species == j,]$avg.flo <- flo.seed.sum[flo.seed.sum$Species == j,]$avg.flo
+  }
+
+# Put viability estimates back in
+flo.seed.sum <- summarySE(flo.seed, measurevar = "p.viable", groupvars = "Species", na.rm = T)
+
+for(j in unique(full[is.na(full$p.viable),]$Species)) {
+    full[is.na(full$p.viable) & full$Species == j,]$p.viable <- flo.seed.sum[flo.seed.sum$Species == j,]$p.viable
+  }
+
+# Multiply together to get n.seed.ind
+full$n.seed.ind <- full$avg.seed.inf * full$avg.flo * full$p.viable
+
+# merge with seed bank data
+full <- merge(full, sb, by = c("Year","Plot","Treat.Code","Species", "strat"), all = T)
+
+# calculate L according: L = s*(1-g) + g*(1-m)*F
 full$L.sb <- full$p.surv*(1-full$p.germ)
-full$L.sa <- ifelse(full$germ.proj > 0 , ((full$germ.proj - full$tot.mort)/full$germ.proj), 0)
-full$L.seeds <- ifelse(full$n.seed.ind >= 0, full$L.sa * full$n.seed.ind, 0)
-
-full$L <- ifelse(full$L.sa == 0,  full$L.sb, full$L.sa*full$L.seeds) #5 missing 
-
+full$L.sa <- full$p.germ * (1 -  full$p.mort)
+full$L.seeds <- full$L.sa * full$n.seed.ind
+full$L <- full$L.sb + full$L.seeds
+full$L <- ifelse(full$L.sa == 0, full$L.sb, full$L)
+full$L <- ifelse(is.na(full$L.sa) == T, full$L.sb, full$L)
 
 #### M1: Germination ####
-m1.t <- glmer(cbind(germ.tot, viable-germ.tot) ~ Subplot * PC.F + (1 + Subplot|Plot:Species), family = binomial, data = dem[dem$Subplot != "Grass",])
+dem$Subplot2 <- ifelse(dem$Subplot == "Grass", "No Grass", as.character(dem$Subplot))
+m1.t <- glmer(cbind(germ.tot, viable-germ.tot) ~ Subplot2 * strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
 plot(fitted(m1.t), resid(m1.t))
-overdisp((m1.t))
 summary(m1.t) 
+overdisp(m1.t)
 
-# germination is lower in thatch across species, with avoiders more strongly affected than tolerators
+fixef(m1.t)
+# contrasts
+SA.N <- c(1, 0, 0, 0, 0, 0)
+SA.G <- c(1, 1, 0, 0, 0, 0)
+SA.T <- c(1, 0, 1, 0, 0, 0)
+
+ST.N <- c(1, 0, 0, 1, 0, 0)
+ST.G <- c(1, 1, 0, 1, 1, 0)
+ST.T <- c(1, 0, 1, 1, 0, 1)
+
+K <- rbind("ST.G - ST.N" = ST.G - ST.N,
+           "ST.T - ST.N" = ST.T - ST.N,
+           "ST.T - ST.G" = ST.T - ST.G,
+           "SA.G - SA.N" = SA.G - SA.N,
+           "SA.T - SA.N" = SA.T - SA.N,
+           "SA.T - SA.G" = SA.T - SA.G)
+
+summary(glht(m1.t, linfct = K), test = adjusted("BH"))
+
+contrast(emmeans(m1.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m1.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m1.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M2: Mortality ####
-m2.t <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot * PC.F + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
+m2.t <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot * strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
 plot(fitted(m2.t), resid(m2.t))
-overdisp(m2.t)
 summary(m2.t) # thatch increases mortality, still higher mortality in Tolerators; no interaction between current grass/drought tolerance or thatch/drought tolerance
 
-ranef(m2.t)
+summary(glht(m2.t, linfct = K), test = adjusted("BH"))
+
+contrast(emmeans(m2.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m2.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m2.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M3: Seed set ####
 
 # random effect structure too complex with slope for sublot; missing 20 levels because of low germ/high mort, with the nestedness structure of the previous models there are too many levels of random effects for estimates
-m3.t <- lmer(log(n.seed.ind + 1) ~ Subplot * PC.F + (1|Plot:Species), flo.seed)
+
+m3.t <- lmer(log(n.seed.ind + 1) ~ Subplot * strat + (1|Plot:Species), flo.seed)
 plot(fitted(m3.t), resid(m3.t))
 qqnorm(resid(m3.t))
 qqline(resid(m3.t), col = 2, lwd = 2, lty = 2)
 summary(m3.t)
 
+summary(glht(m3.t, linfct = K), test = adjusted("BH"))
+
+contrast(emmeans(m3.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m3.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m3.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 # Though grass lowers seed set, the majority of effects of grass occurs through thatch (by lowering light levels?); these species are adapted to high light/lower moisture environments; thatch lowers germination in all species, increases mortality in all species and lowers seed set in all species but moreso in drought avoiders than drought tolerators; I can see the mechanism for germination (light levels?) but how is thatch increasing mortality? light still? it cant be watering in this type of year. 
 
 #### M4: Plot Lambda ####
-hist(log(full$L + .3))
+hist(log(full$L + .5))
 
-m4 <- lmer(log(L + .3) ~ Subplot * PC.F + (1|Plot:Species), full)
-plot(fitted(m4), resid(m4))
-qqnorm(resid(m4))
-qqline(resid(m4), col = 2, lwd = 2, lty = 2)
-summary(m4)
+m4.t <- lmer(log(L + .7) ~ Subplot * strat + (1|Plot:Species), full)
+plot(fitted(m4.t), resid(m4.t))
+qqnorm(resid(m4.t))
+qqline(resid(m4.t), col = 2, lwd = 2, lty = 2)
+summary(m4.t)
+
+summary(glht(m4.t, linfct = K), test = adjusted("BH"))
+
+contrast(emmeans(m4.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m4.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m4.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
+
+# Is it due to live grass?
+m4.t <- lmer(log(L + .3) ~ Subplot * strat + (1|Plot:Species), full[full$Subplot != "Thatch",])
+plot(fitted(m4.t), resid(m4.t))
+qqnorm(resid(m4.t))
+qqline(resid(m4.t), col = 2, lwd = 2, lty = 2)
+summary(m4.t)
+
+fixef(m4.t)
+
+# contrasts
+SA.N <- c(1, 0, 0, 0)
+SA.G <- c(1, 1, 0, 0)
+
+ST.N <- c(1, 0, 1, 0)
+ST.G <- c(1, 1, 1, 1)
+
+K2 <- rbind("ST.G - ST.N" = ST.G - ST.N,
+           "SA.G - SA.N" = SA.G - SA.N)
+
+summary(glht(m4.t, linfct = K2), test = adjusted("BH"))
+
+contrast(emmeans(m4.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M5: Grass Cover ####
 hist(sqrt(grass$cover.g))
@@ -150,292 +249,125 @@ qqnorm(resid(m5))
 qqline(resid(m5), col = 2, lwd = 2, lty = 2)
 summary(m5)
 
-#### M6: Grass seed set ####
+#### Plot Germination ####
 
+germ.t.sum <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot","strat"), na.rm = T)
+germ.t.sum$strat <- revalue(germ.t.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
+germ.t.sum$Subplot <- factor(germ.t.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
+germ.t.sum$Subplot <- revalue(germ.t.sum$Subplot, c("Thatch" = "Grass + Thatch"))
 
-#### Bootstraps CIs ####
-
-df <- expand.grid(Subplot = c("Grass", "No Grass", "Thatch"), PC.F = seq(from = min(trait.w$PC.F), to = max(trait.w$PC.F), length.out = 1000)) 
-
-###
-# Germination
-###
-
-boot1 <- bootMer(m1.t, function(x) predict(x, newdata = df[df$Subplot != "Grass",], type = 'response', allow.new.levels = T, re.form = NA), nsim = 1000, ncpus = 2, verbose = T) # 23/1000 fails
-
-PI.boot <- data.frame(
-           p.germ = apply(boot1$t, 2, function(x) as.numeric(quantile(x, probs = .5, na.rm=TRUE))),
-           p.germ.lo = apply(boot1$t, 2, function(x) as.numeric(quantile(x, probs = .025, na.rm=TRUE))),
-           p.germ.hi = apply(boot1$t, 2, function(x) as.numeric(quantile(x, probs = .975, na.rm=TRUE))))
-
-CI.1 <- merge(PI.boot, df, by = "row.names")
-save(CI.1, file = "Data/Analysis-Output/Bootstrapped-CIs/CI-1.Rdata")
-
-###
-# Mortality
-###
-
-boot2 <- bootMer(m2.t, function(x) predict(x, newdata = df, type = 'response', allow.new.levels = T, re.form = NA), nsim = 1000, verbose = T)
-
-PI.boot <- data.frame(
-           p.mort = apply(boot2$t, 2, function(x) as.numeric(quantile(x, probs = .5, na.rm=TRUE))),
-           p.mort.lo = apply(boot2$t, 2, function(x) as.numeric(quantile(x, probs = .025, na.rm=TRUE))),
-           p.mort.hi = apply(boot2$t, 2, function(x) as.numeric(quantile(x, probs = .975, na.rm=TRUE))))
-
-CI.2 <- merge(PI.boot, df, by = "row.names")
-save(CI.2, file = "Data/Analysis-Output/Bootstrapped-CIs/CI-2.Rdata")
-
-###
-# Seed Set
-###
-
-boot3 <- bootMer(m3.t, function(x) predict(x, newdata = df, type = 'response', allow.new.levels = T, re.form = NA), nsim = 1000, verbose = T) # 
-
-PI.boot <- data.frame(seed = apply(boot3$t, 2, function(x) mean(x)),
-           seed.lo = apply(boot3$t, 2, function(x) as.numeric(quantile(x, probs=.05, na.rm=TRUE))),
-           seed.hi = apply(boot3$t, 2, function(x) as.numeric(quantile(x, probs=.95, na.rm=TRUE))))
-
-CI.3 <- merge(PI.boot, df, by = "row.names")
-save(CI.3, file = "Data/Analysis-Output/Bootstrapped-CIs/CI-3.Rdata")
-
-rm(boot1, boot2, boot3, boot4, boot6, PI.boot)
-
-#### Bootstraps for simulated Lambda ####
-# Dataframe for parameter boots
-df.bt <- expand.grid(Subplot = c("Grass", "No Grass", "Thatch"), PC.F = unique(trait.w$PC.F)) 
-
-
-###
-# Germination
-###
-# 
-# BS.g <- bootMer(m1.t, function(x) predict(x, newdata = df.bt[df.bt$Subplot != "Grass",], type = 'response', allow.new.levels = T, re.form = NA), nsim = 1000, ncpus = 2, verbose = T) #26/1000 didnt converge
-# 
-# save(BS.g, file = "Data/Analysis-Output/Bootstrapped-params/BS-g.Rdata")
-
-###
-# Mortality
-###
-# BS.m <- bootMer(m2.t, function(x) predict(x, newdata = df.bt, type = 'response', allow.new.levels = T, re.form = NA), nsim = 1000, ncpus = 2, verbose = T)
-# 
-# save(BS.m, file = "Data/Analysis-Output/Bootstrapped-params/BS-m.Rdata")
-
-##
-# Seed Set
-##
-
-# BS.F <- bootMer(m3.t, function(x) predict(x, newdata = df.bt, type = 'response', allow.new.levels = T, re.form = NA), nsim = 1000, ncpus = 2, verbose = T) 
-# 
-# save(BS.F, file = "Data/Analysis-Output/Bootstrapped-params/BS-F.Rdata")
-
-#### Prep: Boots seed avg ####
-
-# BS <- list(BS.m, BS.F, BS.g)
-# # Create dataframe of parameter means and sds
-# params <- c("p.mort.b", "seed.set.b", "p.mort.sd",  "seed.set.sd")
-# pm <- as.data.frame(matrix(NA, 18, length(params)))
-# names(pm) = params
-# pm <- cbind(df.bt, pm)
-# 
-# for(i in 1:2){
-#     pm[, i+2] = apply(BS[[i]]$t, 2, function(x) mean(x))
-#     pm[, i+4] = apply(BS[[i]]$t, 2, function(x) sd(x))
-# }
-# 
-# # grass germ = no grass germ
-# pm.gm <- as.data.frame(apply(BS[[3]]$t, 2, function(x) mean(x)))
-# pm.gsd <- as.data.frame(apply(BS[[3]]$t, 2, function(x) sd(x)))
-# pm.g <- cbind(pm.gm, pm.gsd)
-# names(pm.g) <- c("p.germ.b", "p.germ.sd")
-# pm.g <- merge(pm.g, df.bt, by = "row.names")
-# pm <- merge(pm, pm.g, by = c("Subplot", "PC.F"), all = T)
-# pm[pm$Subplot == "Grass",]$p.germ.b <- pm[pm$Subplot == "No Grass",]$p.germ.b
-# pm[pm$Subplot == "Grass",]$p.germ.sd <- pm[pm$Subplot == "No Grass",]$p.germ.sd
-# pm <- pm[,-7]
-# 
-# # merge with seed survival averages
-# pm <- merge(pm, trait.w[,c(1,24)], by = "PC.F")
-# pm <- merge(pm, sb.spp, by = "Species")
-# 
-# # Revalue levels for creating scenarios and matching later
-# pm$Species <- revalue(pm$Species, c("Agoseris heterophylla" =  "AGHE", "Calycadenia pauciflora" = "CAPA", "Clarkia purpurea" = "CLPU", "Hemizonia congesta" = "HECO", "Lasthenia californica" = "LACA", "Plantago erecta" = "PLER"))
-# pm$Subplot <- revalue(pm$Subplot, c("No Grass" = "N", "Grass" = "G", "Thatch" = "T"))
-# pm$Scenario <- paste(pm$Subplot, pm$Species, sep = ".")
-# Scenario <- pm$Scenario
-# later <- pm[,c(1,2,3,11)]
-# 
-# # Create empty Lambda dataframe to fill
-# L.sim <- as.data.frame(Scenario)
-# sims = 10001
-# L.sim[,c(2:sims)] <- NA
-# 
-# # Other dfs for storage and later merger
-# g.sim <- L.sim
-# m.sim <- L.sim
-# s.sim <- L.sim
-# F.sim <- L.sim
-# 
-# # Calculate L from random draws of parameter distributions
-# for(j in 2:sims){
-#   for(i in 1:length(Scenario)){
-#     g.sim[i,j] <- rbinom(n = 1, size = 100, prob = pm[i, "p.germ.b"])/100 #germ
-#     s.sim[i,j] <- rbinom(n = 1, size = 100, prob = pm[i, "p.sd.surv"])/100 #seed surv
-#     #m.sim[i,j] <- rbinom(n = 1, size = 100, prob = pm[i, "p.mort.b"])/100
-#     m.sim[i,j] <- rnorm(n = 1, mean = pm[i, "p.mort.b"], sd = pm[i, "p.mort.sd"])
-#     F.sim[i,j] <- exp(rnorm(n = 1, mean = pm[i, "seed.set.b"], sd = pm[i, "seed.set.sd"])) - 1 #fecund
-#     L.sim[i,j] = s.sim[i,j]*(1 - g.sim[i,j]) + g.sim[i,j]*(1 - m.sim[i,j])*F.sim[i,j]
-#   }
-# }
-# 
-# # melt all dataframes
-# sim.list <- list(L.sim, g.sim, s.sim, m.sim, F.sim)
-# for(i in 1:5){ 
-#   sim.list[[i]] <- melt(sim.list[[i]])
-# }
-# 
-# # merge all dataframes
-# names(sim.list[[1]])[3] <- "L"
-# names(sim.list[[2]])[3] <- "g"
-# names(sim.list[[3]])[3] <- "s"
-# names(sim.list[[4]])[3] <- "m"
-# names(sim.list[[5]])[3] <- "Fe"
-# 
-# L.sim <- merge(sim.list[[1]], sim.list[[2]], by = c("Scenario", "variable"))
-# L.sim <- merge(L.sim, sim.list[[3]], by = c("Scenario", "variable"))
-# L.sim <- merge(L.sim, sim.list[[4]], by = c("Scenario", "variable"))
-# L.sim <- merge(L.sim, sim.list[[5]], by = c("Scenario", "variable"))
-# L.sim <- merge(L.sim, later, by = "Scenario")
-# 
-# B.L <- L.sim[,c(8:10,3:7)]
-# 
-# B.L <- ddply(B.L, .(Species, Subplot, PC.F), summarize, L = mean(L), g = mean(g), sb = mean(s), m = mean(m), Fe = mean(Fe))
-# 
-# save(B.L, file = "Data/Analysis-Output/Bootstrapped-params/BS-L.Rdata")
-# 
-# rm(g.sim, s.sim, m.sim, F.sim, params, pm, i, j, later, Scenario, sim.list, sims, BS, L.sim)
-
-
-#### M7: Boot Lambda ####
-
-###
-# Lambda with seed survival averages
-###
-B.L$Subplot <- factor(B.L$Subplot, levels = c("N", "G", "T"))
-B.L$Subplot <- revalue(B.L$Subplot, c("N" = "No Grass", "G" = "Grass", "T" = "Thatch"))
-hist(B.L$L)
-hist(log(B.L$L))
-hist(log(B.L$L + 1))
-B.L$log.L <- log(B.L$L + 1)
-m5.t <- lm(log.L ~ Subplot * PC.F, B.L)
-plot(fitted(m5.t), resid(m5.t))
-qqnorm(resid(m5.t))
-qqline(resid(m5.t), col = 2, lwd = 2, lty = 2) 
-summary(m5.t)
-hist(resid(m5.t))
-
-
-
- #### Plot Germination ####
-
-germ.t.sum <- summarySE(dem[dem$Subplot != "Grass",], measurevar = "p.germ", groupvars = c("Subplot","Species","PC.F"), na.rm = T)
-
-ggplot(germ.t.sum, aes(x = PC.F, y = p.germ, col = Subplot, group = Subplot)) +
-  geom_ribbon(data = CI.1, aes(ymin = p.germ.lo, ymax = p.germ.hi), alpha = 0.1, linetype = 0) +
-  geom_point() +
+ggplot(germ.t.sum, aes(x = strat, y = p.germ, fill = Subplot)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  geom_errorbar(aes(ymin = p.germ - se, ymax = p.germ + se, width = 0.2), position = position_dodge(0.9)) + 
   theme_classic() +
   theme(legend.title = element_blank(), 
-        axis.text = element_text(size = 10), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 13), 
         axis.title = element_text(size = 15), 
+        axis.title.x = element_blank(),
         strip.text = element_text(size = 15),
         legend.text = element_text(size = 11),
-        legend.position = c(.85, .84),
+        legend.position = c(.8, .84),
         legend.key.size = unit(1.4, 'lines'),
         axis.line = element_blank(),
         panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
-  labs(y = "Germination Rate", x = "Drought Tolerance") +
-  geom_line(data = CI.1, aes(y = p.germ), size = 1) +
-  ylim(.1,1) +
-  scale_color_viridis_d() 
+  labs(y = "Germination Rate", x = "Subplot") +
+  ylim(0,.85) +
+  scale_fill_viridis_d()
 
 #### Plot Mortality ####
 
-dem.sum <- summarySE(dem, measurevar = "p.mort", groupvars = c("Subplot","Species","PC.F"), na.rm = T)
+dem.sum <- summarySE(dem, measurevar = "p.mort", groupvars = c("Subplot","strat"), na.rm = T)
 
 dem.sum$Subplot <- factor(dem.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
+dem.sum$Subplot <- revalue(dem.sum$Subplot, c("Thatch" = "Grass + Thatch"))
+dem.sum$strat <- revalue(dem.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
 
-ggplot(dem.sum, aes(x = PC.F, y = p.mort, col = Subplot, group = Subplot)) +
-  geom_ribbon(data = CI.2, aes(ymin = p.mort.lo, ymax = p.mort.hi), alpha = 0.1, linetype = 0) +
-  geom_point() +
+ggplot(dem.sum, aes(x = strat, y = p.mort, fill = Subplot)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  geom_errorbar(aes(ymin = p.mort - se, ymax = p.mort + se, width = 0.2), position = position_dodge(0.9)) + 
   theme_classic() +
   theme(legend.title = element_blank(), 
-        axis.text = element_text(size = 10), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 13), 
         axis.title = element_text(size = 15), 
+        axis.title.x = element_blank(),
         strip.text = element_text(size = 15),
         legend.text = element_text(size = 11),
-        legend.position = c(.15, .78),
+        legend.position = c(.2, .8),
         legend.key.size = unit(1.4, 'lines'),
         axis.line = element_blank(),
         panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
-  labs(y = "Moratlity Rate", x = "Drought Tolerance") +
-  geom_line(data = CI.2, aes(y = p.mort), size = 1) +
-  scale_color_viridis_d()
+  labs(y = "Mortality Rate", x = "Subplot") +
+  scale_fill_viridis_d()
 
 
 #### Plot Seed set ####
 
-flo.seed.sum <- summarySE(flo.seed, measurevar = "n.seed.ind", groupvars = c("Subplot","Species","PC.F"), na.rm = T)
+flo.seed.sum <- summarySE(flo.seed, measurevar = "n.seed.ind", groupvars = c("Subplot","strat"), na.rm = T)
 flo.seed.sum$Subplot <- factor(flo.seed.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
+flo.seed.sum$Subplot <- revalue(flo.seed.sum$Subplot, c("Thatch" = "Grass + Thatch"))
+flo.seed.sum$strat <- revalue(flo.seed.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
 
-ggplot(flo.seed.sum, aes(x = PC.F, y = n.seed.ind, col = Subplot, group = Subplot)) +
-  geom_ribbon(data = CI.3, aes(y = NULL, ymin = exp(seed.lo) - 1, ymax = exp(seed.hi) - 1), alpha = 0.1, linetype = 0) +
-  geom_point() +
+ggplot(flo.seed.sum, aes(x = strat, y = n.seed.ind, fill = Subplot)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  geom_errorbar(aes(ymin = n.seed.ind - se, ymax = n.seed.ind + se, width = 0.2), position = position_dodge(0.9)) + 
   theme_classic() +
   theme(legend.title = element_blank(), 
-        axis.text = element_text(size = 10), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 13), 
         axis.title = element_text(size = 15), 
+        axis.title.x = element_blank(),
         strip.text = element_text(size = 15),
         legend.text = element_text(size = 11),
-        legend.position = c(.85, .78),
+        legend.position = c(.8, .84),
         legend.key.size = unit(1.4, 'lines'),
         axis.line = element_blank(),
         panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
-  labs(y = "Seed Set", x = "Drought Tolerance") +
-  geom_line(data = CI.3, aes(y = exp(seed) - 1), size = 1) +
-  scale_color_viridis_d()
+  labs(y = "Seeds per individual", x = "Subplot") +
+  scale_fill_viridis_d()
+
 
 #### Plot Lambda (plot) ####
 
-full.t.sum <- summarySE(full, measurevar = "L", groupvars = c("Subplot","Species","PC.F"), na.rm = T)
+full.t.sum <- summarySE(full, measurevar = "L", groupvars = c("Subplot","strat"), na.rm = T)
 
-ggplot(full.t.sum, aes(y = L, x = PC.F, col = Subplot, group = Subplot)) +
-  geom_smooth(method = "lm", se = F) + 
-  geom_point() +
+full.t.sum$strat <- revalue(full.t.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
+full.t.sum$Subplot <- factor(full.t.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
+full.t.sum$Subplot <- revalue(full.t.sum$Subplot, c("Thatch" = "Grass + Thatch"))
+
+# ggplot(full.t.sum, aes(x = Subplot, y = L, fill = strat)) +
+#   geom_bar(position = "dodge", stat = "identity") +
+#   geom_errorbar(aes(ymin = L - se, ymax = L + se, width = .2), position = position_dodge(.9)) +
+#   theme_classic() +
+#   theme(legend.title = element_blank(), 
+#         axis.text.y = element_text(size = 10), 
+#         axis.text.x = element_text(size = 13), 
+#         axis.title = element_text(size = 15), 
+#         axis.title.x = element_blank(),
+#         strip.text = element_text(size = 15),
+#         legend.text = element_text(size = 11),
+#         legend.position = c(.8, .84),
+#         legend.key.size = unit(1.4, 'lines'),
+#         axis.line = element_blank(),
+#         panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
+#   labs(y = "Lambda", x = "Subplot") +
+#   scale_fill_viridis_d()
+
+ggplot(full.t.sum, aes(x = strat, y = L, fill = Subplot)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  geom_errorbar(aes(ymin = L - se, ymax = L + se, width = 0.2), position = position_dodge(.9)) + 
   theme_classic() +
   theme(legend.title = element_blank(), 
-        axis.text = element_text(size = 10), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 13), 
         axis.title = element_text(size = 15), 
+        axis.title.x = element_blank(),
         strip.text = element_text(size = 15),
         legend.text = element_text(size = 11),
-        legend.position = c(.85, .78),
+        legend.position = c(.8, .84),
         legend.key.size = unit(1.4, 'lines'),
         axis.line = element_blank(),
         panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
-  labs(y = "Population Growth Rate", x = "Drought Tolerance") +
-  scale_color_viridis_d()
-
-#### Plot Lambda (BS) ####
-ggplot(B.L, aes(y = L, x = PC.F, col = Subplot, group = Subplot)) +
-  geom_smooth(method = "lm", se = F) + 
-  geom_point() +
-  theme_classic() +
-  theme(legend.title = element_blank(), 
-        axis.text = element_text(size = 10), 
-        axis.title = element_text(size = 15), 
-        strip.text = element_text(size = 15),
-        legend.text = element_text(size = 11),
-        legend.position = c(.85, .78),
-        legend.key.size = unit(1.4, 'lines'),
-        axis.line = element_blank(),
-        panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
-  labs(y = "Population Growth Rate", x = "Drought Tolerance") +
-  scale_color_viridis_d()
+  labs(y = "Lambda", x = "Subplot") +
+  scale_fill_viridis_d()
