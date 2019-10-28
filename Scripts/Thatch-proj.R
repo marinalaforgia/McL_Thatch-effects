@@ -269,8 +269,8 @@ summary(m5)
 
 germ.t.sum <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot2","strat"), na.rm = T)
 germ.t.sum$strat <- revalue(germ.t.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
-germ.t.sum$Subplot2 <- revalue(germ.t.sum$Subplot, c("Thatch" = "Litter"))
-germ.t.sum$Subplot2 <- factor(germ.t.sum$Subplot2, levels = c("No Grass", "Litter"))
+germ.t.sum$Subplot2 <- revalue(germ.t.sum$Subplot, c("Thatch" = "Litter Addition"))
+germ.t.sum$Subplot2 <- factor(germ.t.sum$Subplot2, levels = c("No Grass", "Litter Addition"))
 
 plot.germ <- ggplot(germ.t.sum, aes(x = strat, y = p.germ, fill = Subplot2)) +
   geom_bar(position = "dodge", stat = "identity") +
@@ -295,7 +295,7 @@ ggsave(plot.germ, filename = "Figures/Germ.tiff", width = 3, height = 2.7, units
 dem.sum <- summarySE(dem, measurevar = "p.mort", groupvars = c("Subplot","strat"), na.rm = T)
 
 dem.sum$Subplot <- factor(dem.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-dem.sum$Subplot <- revalue(dem.sum$Subplot, c("Thatch" = "Grass + Litter"))
+dem.sum$Subplot <- revalue(dem.sum$Subplot, c("Thatch" = "Litter Addition"))
 dem.sum$strat <- revalue(dem.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
 
 plot.mort <- ggplot(dem.sum, aes(x = strat, y = p.mort, fill = Subplot)) +
@@ -320,7 +320,7 @@ ggsave(plot.mort, filename = "Figures/Mort.tiff", width = 3, height = 2.7, units
 
 flo.seed.sum <- summarySE(flo.seed, measurevar = "n.seed.ind", groupvars = c("Subplot","strat"), na.rm = T)
 flo.seed.sum$Subplot <- factor(flo.seed.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-flo.seed.sum$Subplot <- revalue(flo.seed.sum$Subplot, c("Thatch" = "Grass + Litter"))
+flo.seed.sum$Subplot <- revalue(flo.seed.sum$Subplot, c("Thatch" = "Litter Addition"))
 flo.seed.sum$strat <- revalue(flo.seed.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
 
 plot.seed <- ggplot(flo.seed.sum, aes(x = strat, y = n.seed.ind, fill = Subplot)) +
@@ -347,7 +347,7 @@ full.t.sum <- summarySE(full, measurevar = "L", groupvars = c("Subplot","strat")
 
 full.t.sum$strat <- revalue(full.t.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
 full.t.sum$Subplot <- factor(full.t.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-full.t.sum$Subplot <- revalue(full.t.sum$Subplot, c("Thatch" = "Grass + Litter"))
+full.t.sum$Subplot <- revalue(full.t.sum$Subplot, c("Thatch" = "Litter Addition"))
 
 # ggplot(full.t.sum, aes(x = Subplot, y = L, fill = strat)) +
 #   geom_bar(position = "dodge", stat = "identity") +
@@ -389,7 +389,7 @@ ggsave(plot.lambda, filename = "Figures/Lambda.tiff", width = 3, height = 2.7, u
 full.sum.spp <- summarySE(full, measurevar = "L", groupvars = c("Subplot", "strat", "Species"), na.rm = T)
 
 full.sum.spp$Subplot <- factor(full.sum.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-full.sum.spp$Subplot <- revalue(full.sum.spp$Subplot, c("Thatch" = "Grass + Litter"))
+full.sum.spp$Subplot <- revalue(full.sum.spp$Subplot, c("Thatch" = "Litter Addition"))
 
 # Avoiders
 plot.lambda.SA <- ggplot(full.sum.spp[full.sum.spp$strat == "SA",], aes(x = Species, y = L, fill = Subplot)) +
@@ -482,7 +482,7 @@ ggsave(plot.germ.ST, filename = "Figures/germ-st.tiff", width = 6, height = 3, u
 #### Spp: Mort ####
 mort.sum.spp <- summarySE(dem, measurevar = "p.mort", groupvars = c("Subplot","strat", "Species"), na.rm = T)
 mort.sum.spp$Subplot <- factor(mort.sum.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-mort.sum.spp$Subplot <- revalue(mort.sum.spp$Subplot, c("Thatch" = "Grass + Litter"))
+mort.sum.spp$Subplot <- revalue(mort.sum.spp$Subplot, c("Thatch" = "Litter Addition"))
 
 # Avoiders
 plot.mort.SA <- ggplot(mort.sum.spp[mort.sum.spp$strat == "SA",], aes(x = Species, y = p.mort, fill = Subplot)) +
@@ -529,7 +529,7 @@ ggsave(plot.mort.ST, filename = "Figures/mort-st.tiff", width = 6, height = 3, u
 
 flo.seed.spp <- summarySE(flo.seed, measurevar = "n.seed.ind", groupvars = c("Subplot","strat", "Species"), na.rm = T)
 flo.seed.spp$Subplot <- factor(flo.seed.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-flo.seed.spp$Subplot <- revalue(flo.seed.spp$Subplot, c("Thatch" = "Grass + Litter"))
+flo.seed.spp$Subplot <- revalue(flo.seed.spp$Subplot, c("Thatch" = "Litter Addition"))
 
 # Avoider
 plot.seed.SA <- ggplot(flo.seed.spp[flo.seed.spp$strat == "SA",], aes(x = Species, y = n.seed.ind, fill = Subplot)) +
