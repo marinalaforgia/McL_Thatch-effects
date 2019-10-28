@@ -1,0 +1,541 @@
+"Year","Treat.Code","Plot","Subplot","Species","germ.tot","germ.proj","trt.mort","pst.mort","tot.mort","viable"
+2017,"W",5,"Grass","Agoseris heterophylla",83,15,0,0,0,94
+2017,"W",5,"Grass","Calycadenia pauciflora",9,10,0,3,3,31
+2017,"W",5,"Grass","Clarkia purpurea",11,12,3,5,8,30
+2017,"W",5,"Grass","Hemizonia congesta",32,15,1,2,3,32
+2017,"W",5,"Grass","Lasthenia californica",44,15,0,0,0,100
+2017,"W",5,"Grass","Plantago erecta",75,15,1,1,2,99
+2017,"W",5,"No Grass","Agoseris heterophylla",60,15,0,0,0,94
+2017,"W",5,"No Grass","Calycadenia pauciflora",12,13,0,7,7,31
+2017,"W",5,"No Grass","Clarkia purpurea",21,17,2,3,5,30
+2017,"W",5,"No Grass","Hemizonia congesta",8,15,0,10,10,32
+2017,"W",5,"No Grass","Lasthenia californica",50,16,1,1,2,100
+2017,"W",5,"No Grass","Plantago erecta",65,16,1,0,1,99
+2017,"W",5,"Thatch","Agoseris heterophylla",67,15,1,0,1,94
+2017,"W",5,"Thatch","Calycadenia pauciflora",11,12,0,11,11,31
+2017,"W",5,"Thatch","Hemizonia congesta",16,15,5,10,15,32
+2017,"W",5,"Thatch","Lasthenia californica",15,15,2,1,3,100
+2017,"W",5,"Thatch","Plantago erecta",42,15,0,1,1,99
+2017,"W",5,"Thatch","Clarkia purpurea",12,13,2,10,12,30
+2017,"W",15,"No Grass","Lasthenia californica",30,15,0,0,0,100
+2017,"W",15,"Thatch","Plantago erecta",45,16,1,0,1,99
+2017,"W",15,"Grass","Hemizonia congesta",10,16,1,5,6,32
+2017,"W",15,"Thatch","Lasthenia californica",26,16,1,3,4,100
+2017,"W",15,"Thatch","Agoseris heterophylla",16,18,3,4,7,94
+2017,"W",15,"Grass","Lasthenia californica",78,17,2,0,2,100
+2017,"W",15,"No Grass","Plantago erecta",89,15,0,0,0,99
+2017,"W",15,"No Grass","Agoseris heterophylla",74,15,0,0,0,94
+2017,"W",15,"Thatch","Clarkia purpurea",17,17,2,1,3,30
+2017,"W",15,"No Grass","Calycadenia pauciflora",11,11,0,2,2,31
+2017,"W",15,"Grass","Agoseris heterophylla",77,15,0,2,2,94
+2017,"W",15,"No Grass","Hemizonia congesta",15,15,0,3,3,32
+2017,"W",15,"Grass","Calycadenia pauciflora",21,15,0,0,0,31
+2017,"W",15,"Grass","Plantago erecta",89,15,0,1,1,99
+2017,"W",15,"Thatch","Calycadenia pauciflora",13,13,4,4,8,31
+2017,"W",15,"Grass","Clarkia purpurea",9,11,0,2,2,30
+2017,"W",15,"No Grass","Clarkia purpurea",30,16,1,1,2,30
+2017,"W",15,"Thatch","Hemizonia congesta",8,10,1,2,3,32
+2017,"W",17,"Grass","Plantago erecta",45,15,0,0,0,99
+2017,"W",17,"Grass","Lasthenia californica",54,15,0,0,0,100
+2017,"W",17,"No Grass","Clarkia purpurea",11,14,0,9,9,30
+2017,"W",17,"Thatch","Plantago erecta",48,15,0,0,0,99
+2017,"W",17,"Grass","Calycadenia pauciflora",10,10,2,7,9,31
+2017,"W",17,"No Grass","Lasthenia californica",99,15,0,1,1,100
+2017,"W",17,"Thatch","Calycadenia pauciflora",9,9,3,6,9,31
+2017,"W",17,"No Grass","Plantago erecta",59,15,0,0,0,99
+2017,"W",17,"No Grass","Hemizonia congesta",14,15,0,3,3,32
+2017,"W",17,"Grass","Hemizonia congesta",7,11,1,4,5,32
+2017,"W",17,"Grass","Clarkia purpurea",8,8,2,6,8,30
+2017,"W",17,"Thatch","Clarkia purpurea",13,14,1,11,12,30
+2017,"W",17,"Thatch","Agoseris heterophylla",3,3,0,1,1,94
+2017,"W",17,"Thatch","Hemizonia congesta",13,14,1,8,9,32
+2017,"W",17,"No Grass","Agoseris heterophylla",20,15,0,0,0,94
+2017,"W",17,"No Grass","Calycadenia pauciflora",11,11,0,1,1,31
+2017,"W",17,"Grass","Agoseris heterophylla",21,15,0,0,0,94
+2017,"W",17,"Thatch","Lasthenia californica",16,15,0,0,0,100
+2017,"C",18,"Grass","Hemizonia congesta",22,16,0,8,8,32
+2017,"C",18,"Thatch","Hemizonia congesta",18,19,4,10,14,32
+2017,"C",18,"No Grass","Calycadenia pauciflora",15,15,2,13,15,31
+2017,"C",18,"No Grass","Agoseris heterophylla",84,15,0,1,1,94
+2017,"C",18,"No Grass","Lasthenia californica",99,15,0,0,0,100
+2017,"C",18,"Grass","Lasthenia californica",50,15,0,0,0,100
+2017,"C",18,"Thatch","Agoseris heterophylla",65,23,8,3,11,94
+2017,"C",18,"Thatch","Lasthenia californica",16,16,1,1,2,100
+2017,"C",18,"Grass","Agoseris heterophylla",63,15,0,1,1,94
+2017,"C",18,"Grass","Clarkia purpurea",15,16,4,12,16,30
+2017,"C",18,"No Grass","Hemizonia congesta",18,15,0,9,9,32
+2017,"C",18,"No Grass","Clarkia purpurea",12,15,1,13,14,30
+2017,"C",18,"No Grass","Plantago erecta",41,15,0,0,0,99
+2017,"C",18,"Thatch","Clarkia purpurea",13,14,1,13,14,30
+2017,"C",18,"Grass","Plantago erecta",45,15,0,0,0,99
+2017,"C",18,"Grass","Calycadenia pauciflora",11,12,0,9,9,31
+2017,"C",18,"Thatch","Calycadenia pauciflora",14,14,2,11,13,31
+2017,"C",18,"Thatch","Plantago erecta",47,15,0,0,0,99
+2017,"W",19,"Thatch","Hemizonia congesta",10,11,3,3,6,32
+2017,"W",19,"Grass","Lasthenia californica",65,15,0,0,0,100
+2017,"W",19,"Grass","Clarkia purpurea",17,17,2,8,10,30
+2017,"W",19,"No Grass","Plantago erecta",78,15,0,0,0,99
+2017,"W",19,"Thatch","Agoseris heterophylla",2,2,0,2,2,94
+2017,"W",19,"No Grass","Clarkia purpurea",30,15,0,6,6,30
+2017,"W",19,"Grass","Plantago erecta",67,15,0,0,0,99
+2017,"W",19,"Grass","Hemizonia congesta",14,15,5,8,13,32
+2017,"W",19,"Thatch","Clarkia purpurea",15,16,5,3,8,30
+2017,"W",19,"Grass","Calycadenia pauciflora",11,11,1,2,3,31
+2017,"W",19,"Thatch","Lasthenia californica",4,4,0,1,1,100
+2017,"W",19,"Grass","Agoseris heterophylla",31,16,1,4,5,94
+2017,"W",19,"No Grass","Lasthenia californica",37,15,0,0,0,100
+2017,"W",19,"Thatch","Calycadenia pauciflora",2,3,2,0,2,31
+2017,"W",19,"No Grass","Agoseris heterophylla",52,15,0,2,2,94
+2017,"W",19,"Thatch","Plantago erecta",13,13,4,0,4,99
+2017,"W",19,"No Grass","Calycadenia pauciflora",27,16,2,1,3,31
+2017,"W",19,"No Grass","Hemizonia congesta",24,15,0,1,1,32
+2017,"W",23,"Grass","Lasthenia californica",45,15,0,2,2,100
+2017,"W",23,"Thatch","Clarkia purpurea",24,16,3,7,10,30
+2017,"W",23,"Grass","Calycadenia pauciflora",28,15,1,6,7,31
+2017,"W",23,"Grass","Clarkia purpurea",17,15,2,9,11,30
+2017,"W",23,"Thatch","Plantago erecta",74,15,1,0,1,99
+2017,"W",23,"Thatch","Agoseris heterophylla",5,5,4,0,4,94
+2017,"W",23,"Thatch","Hemizonia congesta",21,15,5,5,10,32
+2017,"W",23,"No Grass","Lasthenia californica",51,15,0,0,0,100
+2017,"W",23,"No Grass","Hemizonia congesta",32,15,1,1,2,32
+2017,"W",23,"Thatch","Lasthenia californica",5,5,2,1,3,100
+2017,"W",23,"No Grass","Calycadenia pauciflora",12,15,1,3,4,31
+2017,"W",23,"No Grass","Plantago erecta",87,15,1,0,1,99
+2017,"W",23,"Thatch","Calycadenia pauciflora",5,5,0,3,3,31
+2017,"W",23,"No Grass","Clarkia purpurea",30,15,0,2,2,30
+2017,"W",23,"Grass","Plantago erecta",99,15,0,0,0,99
+2017,"W",23,"No Grass","Agoseris heterophylla",75,17,5,1,6,94
+2017,"W",23,"Grass","Agoseris heterophylla",84,15,0,6,6,94
+2017,"W",23,"Grass","Hemizonia congesta",15,15,0,6,6,32
+2017,"W",29,"Thatch","Lasthenia californica",11,11,2,4,6,100
+2017,"W",29,"Thatch","Agoseris heterophylla",29,16,7,1,8,94
+2017,"W",29,"No Grass","Calycadenia pauciflora",16,15,0,15,15,31
+2017,"W",29,"No Grass","Hemizonia congesta",15,15,2,3,5,32
+2017,"W",29,"Grass","Lasthenia californica",28,17,2,3,5,100
+2017,"W",29,"No Grass","Clarkia purpurea",10,14,2,4,6,30
+2017,"W",29,"No Grass","Agoseris heterophylla",94,15,0,0,0,94
+2017,"W",29,"Grass","Plantago erecta",81,15,0,0,0,99
+2017,"W",29,"Thatch","Hemizonia congesta",14,15,8,6,14,32
+2017,"W",29,"No Grass","Plantago erecta",86,15,0,1,1,99
+2017,"W",29,"Grass","Clarkia purpurea",19,15,0,3,3,30
+2017,"W",29,"Grass","Hemizonia congesta",13,15,1,8,9,32
+2017,"W",29,"Grass","Agoseris heterophylla",94,15,0,0,0,94
+2017,"W",29,"Grass","Calycadenia pauciflora",9,9,2,8,9,31
+2017,"W",29,"No Grass","Lasthenia californica",16,16,4,4,8,100
+2017,"W",29,"Thatch","Plantago erecta",48,17,2,1,3,99
+2017,"W",29,"Thatch","Calycadenia pauciflora",2,2,0,2,2,31
+2017,"W",29,"Thatch","Clarkia purpurea",12,12,3,9,12,30
+2017,"C",30,"Thatch","Plantago erecta",85,15,0,0,0,99
+2017,"C",30,"Grass","Calycadenia pauciflora",4,4,0,4,4,31
+2017,"C",30,"Thatch","Lasthenia californica",12,13,0,3,3,100
+2017,"C",30,"Grass","Clarkia purpurea",11,15,1,1,2,30
+2017,"C",30,"Grass","Plantago erecta",86,15,0,0,0,99
+2017,"C",30,"No Grass","Calycadenia pauciflora",7,9,0,9,9,31
+2017,"C",30,"No Grass","Agoseris heterophylla",94,15,0,2,2,94
+2017,"C",30,"Grass","Hemizonia congesta",9,17,2,4,6,32
+2017,"C",30,"Thatch","Calycadenia pauciflora",4,4,0,4,4,31
+2017,"C",30,"Thatch","Hemizonia congesta",17,17,5,4,9,32
+2017,"C",30,"Grass","Lasthenia californica",28,18,3,0,3,100
+2017,"C",30,"Grass","Agoseris heterophylla",94,15,0,1,1,94
+2017,"C",30,"No Grass","Clarkia purpurea",20,15,0,6,6,30
+2017,"C",30,"Thatch","Clarkia purpurea",21,15,1,5,6,30
+2017,"C",30,"Thatch","Agoseris heterophylla",37,20,5,6,11,94
+2017,"C",30,"No Grass","Lasthenia californica",24,15,0,2,2,100
+2017,"C",30,"No Grass","Plantago erecta",99,15,0,0,0,99
+2017,"C",30,"No Grass","Hemizonia congesta",27,15,2,4,6,32
+2017,"W",37,"Grass","Plantago erecta",65,15,0,0,0,99
+2017,"W",37,"No Grass","Clarkia purpurea",10,16,1,7,8,30
+2017,"W",37,"No Grass","Agoseris heterophylla",45,15,0,5,5,94
+2017,"W",37,"Grass","Clarkia purpurea",9,11,1,10,11,30
+2017,"W",37,"Grass","Lasthenia californica",17,17,2,0,2,100
+2017,"W",37,"Grass","Hemizonia congesta",13,16,1,4,5,32
+2017,"W",37,"Thatch","Lasthenia californica",15,15,3,8,11,100
+2017,"W",37,"Grass","Calycadenia pauciflora",12,12,1,5,6,31
+2017,"W",37,"No Grass","Plantago erecta",74,15,0,0,0,99
+2017,"W",37,"Thatch","Calycadenia pauciflora",3,3,0,3,3,31
+2017,"W",37,"Thatch","Plantago erecta",22,15,0,0,0,99
+2017,"W",37,"Thatch","Agoseris heterophylla",2,2,2,0,2,94
+2017,"W",37,"No Grass","Lasthenia californica",31,15,0,0,0,100
+2017,"W",37,"Grass","Agoseris heterophylla",30,16,8,4,12,94
+2017,"W",37,"Thatch","Hemizonia congesta",10,15,3,4,7,32
+2017,"W",37,"No Grass","Hemizonia congesta",10,15,0,4,4,32
+2017,"W",37,"Thatch","Clarkia purpurea",5,5,1,3,4,30
+2017,"W",37,"No Grass","Calycadenia pauciflora",20,15,0,9,9,31
+2017,"W",49,"Grass","Agoseris heterophylla",83,16,1,2,3,94
+2017,"W",49,"Grass","Hemizonia congesta",28,15,0,0,0,32
+2017,"W",49,"Thatch","Hemizonia congesta",11,15,3,7,10,32
+2017,"W",49,"No Grass","Agoseris heterophylla",55,19,12,1,13,94
+2017,"W",49,"No Grass","Calycadenia pauciflora",19,15,5,4,9,31
+2017,"W",49,"No Grass","Clarkia purpurea",29,17,2,0,2,30
+2017,"W",49,"No Grass","Hemizonia congesta",29,15,0,1,1,32
+2017,"W",49,"Thatch","Plantago erecta",41,15,1,1,2,99
+2017,"W",49,"Thatch","Agoseris heterophylla",25,17,4,0,4,94
+2017,"W",49,"No Grass","Plantago erecta",77,15,0,0,0,99
+2017,"W",49,"Thatch","Calycadenia pauciflora",7,7,1,5,6,31
+2017,"W",49,"No Grass","Lasthenia californica",24,15,0,0,0,100
+2017,"W",49,"Grass","Clarkia purpurea",16,15,0,5,5,30
+2017,"W",49,"Thatch","Lasthenia californica",20,15,4,7,11,100
+2017,"W",49,"Grass","Lasthenia californica",26,15,0,0,0,100
+2017,"W",49,"Grass","Plantago erecta",65,15,0,0,0,99
+2017,"W",49,"Grass","Calycadenia pauciflora",12,13,0,0,0,31
+2017,"W",49,"Thatch","Clarkia purpurea",14,16,2,13,15,30
+2017,"C",50,"Grass","Clarkia purpurea",15,15,1,11,12,30
+2017,"C",50,"Grass","Hemizonia congesta",20,15,0,2,2,32
+2017,"C",50,"No Grass","Lasthenia californica",46,15,0,0,0,100
+2017,"C",50,"Thatch","Agoseris heterophylla",56,16,1,5,6,94
+2017,"C",50,"No Grass","Agoseris heterophylla",94,15,0,4,4,94
+2017,"C",50,"Thatch","Calycadenia pauciflora",3,3,2,1,3,31
+2017,"C",50,"Grass","Lasthenia californica",29,15,0,0,0,100
+2017,"C",50,"Grass","Agoseris heterophylla",63,16,1,0,1,94
+2017,"C",50,"No Grass","Hemizonia congesta",14,15,0,10,10,32
+2017,"C",50,"No Grass","Clarkia purpurea",28,15,0,9,9,30
+2017,"C",50,"No Grass","Calycadenia pauciflora",24,15,0,11,11,31
+2017,"C",50,"Grass","Plantago erecta",61,15,0,0,0,99
+2017,"C",50,"Thatch","Hemizonia congesta",13,17,3,11,14,32
+2017,"C",50,"Thatch","Lasthenia californica",21,15,3,0,3,100
+2017,"C",50,"Thatch","Plantago erecta",43,15,0,0,0,99
+2017,"C",50,"Grass","Calycadenia pauciflora",19,15,0,8,8,31
+2017,"C",50,"No Grass","Plantago erecta",99,15,0,0,0,99
+2017,"C",50,"Thatch","Clarkia purpurea",10,13,4,8,12,30
+2017,"W",55,"Thatch","Plantago erecta",45,15,0,3,3,99
+2017,"W",55,"Thatch","Lasthenia californica",16,15,0,6,6,100
+2017,"W",55,"Grass","Plantago erecta",67,15,0,1,1,99
+2017,"W",55,"Thatch","Calycadenia pauciflora",14,14,2,10,12,31
+2017,"W",55,"No Grass","Lasthenia californica",18,16,1,0,1,100
+2017,"W",55,"Grass","Hemizonia congesta",32,15,0,4,4,32
+2017,"W",55,"Thatch","Hemizonia congesta",32,17,3,1,4,32
+2017,"W",55,"Thatch","Clarkia purpurea",10,11,1,10,11,30
+2017,"W",55,"Grass","Clarkia purpurea",20,15,3,9,12,30
+2017,"W",55,"No Grass","Hemizonia congesta",29,16,1,0,1,32
+2017,"W",55,"No Grass","Calycadenia pauciflora",14,14,0,12,12,31
+2017,"W",55,"No Grass","Clarkia purpurea",26,16,1,8,9,30
+2017,"W",55,"Grass","Lasthenia californica",20,15,0,1,1,100
+2017,"W",55,"No Grass","Agoseris heterophylla",79,15,0,0,0,94
+2017,"W",55,"Grass","Calycadenia pauciflora",20,15,0,10,10,31
+2017,"W",55,"No Grass","Plantago erecta",68,15,0,0,0,99
+2017,"W",55,"Thatch","Agoseris heterophylla",75,15,0,7,7,94
+2017,"W",55,"Grass","Agoseris heterophylla",79,15,0,1,1,94
+2017,"C",56,"Thatch","Lasthenia californica",24,16,2,0,2,100
+2017,"C",56,"No Grass","Lasthenia californica",35,15,0,0,0,100
+2017,"C",56,"Thatch","Calycadenia pauciflora",10,10,3,7,10,31
+2017,"C",56,"No Grass","Calycadenia pauciflora",8,8,0,4,4,31
+2017,"C",56,"No Grass","Agoseris heterophylla",74,15,0,1,1,94
+2017,"C",56,"Grass","Hemizonia congesta",30,15,0,0,0,32
+2017,"C",56,"Thatch","Clarkia purpurea",7,7,0,7,7,30
+2017,"C",56,"Grass","Agoseris heterophylla",93,15,0,0,0,94
+2017,"C",56,"Thatch","Hemizonia congesta",29,15,0,7,7,32
+2017,"C",56,"No Grass","Clarkia purpurea",18,15,0,8,8,30
+2017,"C",56,"Grass","Lasthenia californica",12,12,1,0,1,100
+2017,"C",56,"Thatch","Agoseris heterophylla",22,16,2,0,2,94
+2017,"C",56,"Grass","Calycadenia pauciflora",15,15,0,11,11,31
+2017,"C",56,"Grass","Plantago erecta",60,15,0,0,0,99
+2017,"C",56,"No Grass","Hemizonia congesta",28,15,1,2,3,32
+2017,"C",56,"No Grass","Plantago erecta",96,15,0,0,0,99
+2017,"C",56,"Grass","Clarkia purpurea",9,11,0,6,6,30
+2017,"C",56,"Thatch","Plantago erecta",52,15,0,0,0,99
+2017,"W",59,"Grass","Hemizonia congesta",32,15,0,6,6,32
+2017,"W",59,"Thatch","Calycadenia pauciflora",7,7,2,2,4,31
+2017,"W",59,"Thatch","Agoseris heterophylla",70,17,2,0,2,94
+2017,"W",59,"Thatch","Lasthenia californica",47,15,0,1,1,100
+2017,"W",59,"No Grass","Clarkia purpurea",7,10,0,6,6,30
+2017,"W",59,"No Grass","Plantago erecta",67,15,0,0,0,99
+2017,"W",59,"No Grass","Agoseris heterophylla",78,15,0,0,0,94
+2017,"W",59,"Grass","Lasthenia californica",39,15,0,0,0,100
+2017,"W",59,"Grass","Clarkia purpurea",7,9,1,7,8,30
+2017,"W",59,"Grass","Plantago erecta",76,15,0,0,0,99
+2017,"W",59,"No Grass","Lasthenia californica",22,15,0,0,0,100
+2017,"W",59,"Thatch","Plantago erecta",47,16,1,0,1,99
+2017,"W",59,"Thatch","Clarkia purpurea",6,6,2,3,5,30
+2017,"W",59,"Grass","Agoseris heterophylla",90,15,0,0,0,94
+2017,"W",59,"No Grass","Hemizonia congesta",10,15,0,8,8,32
+2017,"W",59,"No Grass","Calycadenia pauciflora",10,11,0,8,8,31
+2017,"W",59,"Grass","Calycadenia pauciflora",17,16,1,13,14,31
+2017,"W",59,"Thatch","Hemizonia congesta",25,17,3,8,11,32
+2017,"D",81,"Thatch","Hemizonia congesta",12,13,0,6,6,32
+2017,"D",81,"Thatch","Agoseris heterophylla",88,16,1,8,9,94
+2017,"D",81,"Thatch","Lasthenia californica",48,15,0,7,7,100
+2017,"D",81,"Thatch","Clarkia purpurea",20,17,2,7,9,30
+2017,"D",81,"Thatch","Calycadenia pauciflora",16,15,1,8,9,31
+2017,"D",81,"Grass","Hemizonia congesta",25,15,0,0,0,32
+2017,"D",81,"No Grass","Plantago erecta",89,16,1,0,1,99
+2017,"D",81,"No Grass","Lasthenia californica",83,15,0,0,0,100
+2017,"D",81,"No Grass","Hemizonia congesta",12,12,0,5,5,32
+2017,"D",81,"No Grass","Agoseris heterophylla",87,15,0,2,2,94
+2017,"D",81,"Grass","Agoseris heterophylla",78,15,0,12,12,94
+2017,"D",81,"Thatch","Plantago erecta",67,15,0,0,0,99
+2017,"D",81,"No Grass","Calycadenia pauciflora",14,14,0,7,7,31
+2017,"D",81,"Grass","Calycadenia pauciflora",17,15,0,4,4,31
+2017,"D",81,"Grass","Lasthenia californica",67,16,1,0,1,100
+2017,"D",81,"Grass","Plantago erecta",89,15,0,0,0,99
+2017,"D",81,"No Grass","Clarkia purpurea",6,6,0,2,2,30
+2017,"D",81,"Grass","Clarkia purpurea",16,15,1,7,8,30
+2017,"C",82,"Thatch","Hemizonia congesta",14,14,1,11,12,32
+2017,"C",82,"No Grass","Lasthenia californica",71,24,9,0,9,100
+2017,"C",82,"Grass","Agoseris heterophylla",68,18,3,2,5,94
+2017,"C",82,"No Grass","Agoseris heterophylla",77,16,2,0,2,94
+2017,"C",82,"Grass","Calycadenia pauciflora",17,15,4,8,12,31
+2017,"C",82,"Grass","Hemizonia congesta",10,14,1,8,9,32
+2017,"C",82,"No Grass","Clarkia purpurea",14,15,13,1,14,30
+2017,"C",82,"Thatch","Plantago erecta",70,15,0,0,0,99
+2017,"C",82,"Thatch","Clarkia purpurea",13,14,3,10,13,30
+2017,"C",82,"No Grass","Hemizonia congesta",8,10,2,0,2,32
+2017,"C",82,"No Grass","Plantago erecta",21,20,11,1,12,99
+2017,"C",82,"No Grass","Calycadenia pauciflora",21,15,1,2,3,31
+2017,"C",82,"Thatch","Agoseris heterophylla",37,15,1,3,4,94
+2017,"C",82,"Grass","Lasthenia californica",48,16,3,1,4,100
+2017,"C",82,"Thatch","Lasthenia californica",58,18,3,3,6,100
+2017,"C",82,"Thatch","Calycadenia pauciflora",5,5,1,4,5,31
+2017,"C",82,"Grass","Clarkia purpurea",26,15,3,9,12,30
+2017,"C",82,"Grass","Plantago erecta",87,18,3,1,4,99
+2017,"D",83,"No Grass","Calycadenia pauciflora",14,14,0,7,7,31
+2017,"D",83,"Thatch","Plantago erecta",58,15,0,8,8,99
+2017,"D",83,"Thatch","Clarkia purpurea",20,16,1,13,14,30
+2017,"D",83,"Grass","Hemizonia congesta",20,15,0,0,0,32
+2017,"D",83,"No Grass","Hemizonia congesta",13,15,0,14,14,32
+2017,"D",83,"No Grass","Plantago erecta",71,15,0,0,0,99
+2017,"D",83,"Grass","Clarkia purpurea",20,16,1,2,3,30
+2017,"D",83,"Thatch","Hemizonia congesta",23,15,0,15,15,32
+2017,"D",83,"Thatch","Calycadenia pauciflora",20,15,3,12,15,31
+2017,"D",83,"Grass","Lasthenia californica",50,15,0,0,0,100
+2017,"D",83,"No Grass","Agoseris heterophylla",86,15,0,0,0,94
+2017,"D",83,"Grass","Plantago erecta",54,15,0,0,0,99
+2017,"D",83,"No Grass","Lasthenia californica",81,15,0,0,0,100
+2017,"D",83,"No Grass","Clarkia purpurea",25,15,1,2,3,30
+2017,"D",83,"Thatch","Lasthenia californica",50,15,0,11,11,100
+2017,"D",83,"Thatch","Agoseris heterophylla",63,15,0,2,2,94
+2017,"D",83,"Grass","Calycadenia pauciflora",11,13,0,1,1,31
+2017,"D",83,"Grass","Agoseris heterophylla",87,15,0,1,1,94
+2017,"C",84,"No Grass","Clarkia purpurea",17,15,1,7,8,30
+2017,"C",84,"Grass","Plantago erecta",72,15,0,1,1,99
+2017,"C",84,"Thatch","Agoseris heterophylla",57,19,4,7,11,94
+2017,"C",84,"No Grass","Plantago erecta",69,15,0,0,0,99
+2017,"C",84,"No Grass","Hemizonia congesta",28,15,1,3,4,32
+2017,"C",84,"Grass","Hemizonia congesta",10,13,3,1,4,32
+2017,"C",84,"Thatch","Plantago erecta",59,15,0,3,3,99
+2017,"C",84,"Thatch","Hemizonia congesta",22,15,0,10,10,32
+2017,"C",84,"No Grass","Lasthenia californica",56,15,0,0,0,100
+2017,"C",84,"Thatch","Clarkia purpurea",21,16,1,11,12,30
+2017,"C",84,"Grass","Calycadenia pauciflora",8,9,1,3,4,31
+2017,"C",84,"Thatch","Calycadenia pauciflora",8,8,0,8,8,31
+2017,"C",84,"No Grass","Calycadenia pauciflora",6,9,0,5,5,31
+2017,"C",84,"No Grass","Agoseris heterophylla",82,15,0,0,0,94
+2017,"C",84,"Grass","Lasthenia californica",64,15,0,0,0,100
+2017,"C",84,"Grass","Agoseris heterophylla",94,16,1,3,4,94
+2017,"C",84,"Grass","Clarkia purpurea",15,14,2,9,11,30
+2017,"C",84,"Thatch","Lasthenia californica",52,15,0,0,0,100
+2017,"D",85,"No Grass","Calycadenia pauciflora",29,16,2,0,2,31
+2017,"D",85,"Grass","Hemizonia congesta",12,15,0,2,2,32
+2017,"D",85,"Thatch","Hemizonia congesta",21,15,0,1,1,32
+2017,"D",85,"Grass","Clarkia purpurea",20,15,0,7,7,30
+2017,"D",85,"Thatch","Clarkia purpurea",30,15,0,4,4,30
+2017,"D",85,"Grass","Plantago erecta",74,15,0,0,0,99
+2017,"D",85,"Grass","Lasthenia californica",64,15,0,0,0,100
+2017,"D",85,"Grass","Calycadenia pauciflora",21,15,0,0,0,31
+2017,"D",85,"Grass","Agoseris heterophylla",94,15,0,0,0,94
+2017,"D",85,"No Grass","Hemizonia congesta",10,10,7,3,10,32
+2017,"D",85,"No Grass","Clarkia purpurea",15,15,0,4,4,30
+2017,"D",85,"Thatch","Lasthenia californica",63,15,1,1,2,100
+2017,"D",85,"No Grass","Agoseris heterophylla",54,15,0,0,0,94
+2017,"D",85,"Thatch","Calycadenia pauciflora",16,15,0,11,11,31
+2017,"D",85,"Thatch","Plantago erecta",51,15,1,1,2,99
+2017,"D",85,"Thatch","Agoseris heterophylla",94,15,0,3,3,94
+2017,"D",85,"No Grass","Lasthenia californica",81,14,1,0,1,100
+2017,"D",85,"No Grass","Plantago erecta",80,7,0,1,1,99
+2017,"C",86,"Thatch","Clarkia purpurea",18,15,2,10,12,30
+2017,"C",86,"Grass","Hemizonia congesta",16,15,0,5,5,32
+2017,"C",86,"Grass","Calycadenia pauciflora",16,15,0,2,2,31
+2017,"C",86,"No Grass","Lasthenia californica",48,15,0,0,0,100
+2017,"C",86,"Grass","Agoseris heterophylla",94,15,0,0,0,94
+2017,"C",86,"Grass","Clarkia purpurea",18,15,0,10,10,30
+2017,"C",86,"Grass","Lasthenia californica",85,15,0,0,0,100
+2017,"C",86,"Thatch","Agoseris heterophylla",94,15,0,2,2,94
+2017,"C",86,"Thatch","Calycadenia pauciflora",5,3,0,3,3,31
+2017,"C",86,"No Grass","Plantago erecta",74,15,0,0,0,99
+2017,"C",86,"No Grass","Agoseris heterophylla",94,15,0,3,3,94
+2017,"C",86,"Thatch","Plantago erecta",68,15,1,0,1,99
+2017,"C",86,"Grass","Plantago erecta",77,15,0,0,0,99
+2017,"C",86,"Thatch","Hemizonia congesta",17,15,4,2,6,32
+2017,"C",86,"Thatch","Lasthenia californica",55,16,1,1,2,100
+2017,"C",86,"No Grass","Calycadenia pauciflora",3,3,0,0,0,31
+2017,"C",86,"No Grass","Hemizonia congesta",16,15,0,4,4,32
+2017,"C",86,"No Grass","Clarkia purpurea",4,8,1,5,6,30
+2017,"D",87,"Thatch","Lasthenia californica",31,15,0,0,0,100
+2017,"D",87,"Grass","Lasthenia californica",8,7,0,0,0,100
+2017,"D",87,"Grass","Calycadenia pauciflora",17,15,0,6,6,31
+2017,"D",87,"Grass","Clarkia purpurea",20,15,0,7,7,30
+2017,"D",87,"No Grass","Hemizonia congesta",21,15,0,9,9,32
+2017,"D",87,"Grass","Agoseris heterophylla",82,15,0,3,3,94
+2017,"D",87,"No Grass","Plantago erecta",72,15,0,0,0,99
+2017,"D",87,"Grass","Hemizonia congesta",13,15,1,6,7,32
+2017,"D",87,"Thatch","Calycadenia pauciflora",6,7,0,2,2,31
+2017,"D",87,"Thatch","Hemizonia congesta",5,12,0,8,8,32
+2017,"D",87,"No Grass","Calycadenia pauciflora",11,11,1,0,1,31
+2017,"D",87,"Grass","Plantago erecta",51,15,0,0,0,99
+2017,"D",87,"No Grass","Lasthenia californica",55,15,0,0,0,100
+2017,"D",87,"No Grass","Agoseris heterophylla",68,15,0,0,0,94
+2017,"D",87,"Thatch","Clarkia purpurea",24,16,1,13,14,30
+2017,"D",87,"Thatch","Agoseris heterophylla",94,15,0,3,3,94
+2017,"D",87,"No Grass","Clarkia purpurea",10,9,1,3,4,30
+2017,"D",87,"Thatch","Plantago erecta",62,16,1,2,3,99
+2017,"D",89,"Grass","Hemizonia congesta",29,15,0,0,0,32
+2017,"D",89,"No Grass","Calycadenia pauciflora",8,8,0,4,4,31
+2017,"D",89,"No Grass","Agoseris heterophylla",68,15,0,1,1,94
+2017,"D",89,"Thatch","Clarkia purpurea",20,15,0,14,14,30
+2017,"D",89,"Grass","Clarkia purpurea",13,13,0,8,8,30
+2017,"D",89,"Thatch","Agoseris heterophylla",32,15,0,2,2,94
+2017,"D",89,"No Grass","Hemizonia congesta",16,15,0,9,9,32
+2017,"D",89,"Thatch","Plantago erecta",39,15,2,3,5,99
+2017,"D",89,"No Grass","Lasthenia californica",75,15,0,0,0,100
+2017,"D",89,"Grass","Plantago erecta",60,15,0,0,0,99
+2017,"D",89,"Thatch","Calycadenia pauciflora",9,9,1,1,2,31
+2017,"D",89,"Thatch","Hemizonia congesta",10,15,0,4,4,32
+2017,"D",89,"Grass","Lasthenia californica",71,15,0,0,0,100
+2017,"D",89,"Thatch","Lasthenia californica",39,15,2,0,2,100
+2017,"D",89,"No Grass","Clarkia purpurea",19,15,0,15,15,30
+2017,"D",89,"No Grass","Plantago erecta",69,15,0,0,0,99
+2017,"D",89,"Grass","Agoseris heterophylla",94,15,0,0,0,94
+2017,"D",89,"Grass","Calycadenia pauciflora",11,11,0,2,2,31
+2017,"D",91,"Grass","Lasthenia californica",41,16,1,0,1,100
+2017,"D",91,"No Grass","Plantago erecta",78,15,0,0,0,99
+2017,"D",91,"No Grass","Lasthenia californica",31,15,0,0,0,100
+2017,"D",91,"Grass","Clarkia purpurea",11,15,0,14,14,30
+2017,"D",91,"No Grass","Calycadenia pauciflora",9,9,0,0,0,31
+2017,"D",91,"No Grass","Agoseris heterophylla",23,18,3,2,5,94
+2017,"D",91,"Thatch","Plantago erecta",43,15,1,1,2,99
+2017,"D",91,"No Grass","Clarkia purpurea",15,15,0,10,10,30
+2017,"D",91,"Grass","Plantago erecta",82,15,0,0,0,99
+2017,"D",91,"Grass","Agoseris heterophylla",32,15,0,5,5,94
+2017,"D",91,"Grass","Calycadenia pauciflora",8,8,0,0,0,31
+2017,"D",91,"Thatch","Lasthenia californica",4,4,1,1,2,100
+2017,"D",91,"Thatch","Calycadenia pauciflora",6,6,0,6,6,31
+2017,"D",91,"No Grass","Hemizonia congesta",29,16,1,2,3,32
+2017,"D",91,"Thatch","Clarkia purpurea",16,16,1,14,15,30
+2017,"D",91,"Grass","Hemizonia congesta",32,15,1,6,7,32
+2017,"D",91,"Thatch","Hemizonia congesta",10,14,2,8,10,32
+2017,"D",91,"Thatch","Agoseris heterophylla",0,0,0,0,0,94
+2017,"C",92,"Thatch","Agoseris heterophylla",0,0,0,0,0,94
+2017,"C",92,"Grass","Plantago erecta",50,15,0,0,0,99
+2017,"C",92,"Grass","Calycadenia pauciflora",10,10,0,5,5,31
+2017,"C",92,"No Grass","Lasthenia californica",48,16,1,2,3,100
+2017,"C",92,"Thatch","Hemizonia congesta",4,15,1,8,9,32
+2017,"C",92,"No Grass","Plantago erecta",72,15,0,0,0,99
+2017,"C",92,"No Grass","Hemizonia congesta",32,15,0,6,6,32
+2017,"C",92,"Thatch","Plantago erecta",30,15,0,2,2,99
+2017,"C",92,"Thatch","Lasthenia californica",15,16,3,3,6,100
+2017,"C",92,"Grass","Hemizonia congesta",32,16,2,5,7,32
+2017,"C",92,"Thatch","Clarkia purpurea",25,15,2,12,14,30
+2017,"C",92,"Thatch","Calycadenia pauciflora",6,6,0,4,4,31
+2017,"C",92,"Grass","Lasthenia californica",50,16,1,0,1,100
+2017,"C",92,"Grass","Agoseris heterophylla",51,15,0,5,5,94
+2017,"C",92,"No Grass","Clarkia purpurea",25,23,13,8,21,30
+2017,"C",92,"No Grass","Agoseris heterophylla",69,15,0,1,1,94
+2017,"C",92,"No Grass","Calycadenia pauciflora",12,12,0,8,8,31
+2017,"C",92,"Grass","Clarkia purpurea",25,16,1,6,7,30
+2017,"D",93,"Grass","Lasthenia californica",33,16,1,0,1,100
+2017,"D",93,"No Grass","Calycadenia pauciflora",10,12,0,11,11,31
+2017,"D",93,"Thatch","Calycadenia pauciflora",3,6,1,5,6,31
+2017,"D",93,"Thatch","Lasthenia californica",24,18,4,6,10,100
+2017,"D",93,"Grass","Hemizonia congesta",16,15,0,8,8,32
+2017,"D",93,"Thatch","Hemizonia congesta",24,15,1,12,13,32
+2017,"D",93,"No Grass","Agoseris heterophylla",94,15,0,0,0,94
+2017,"D",93,"Thatch","Agoseris heterophylla",70,17,3,0,3,94
+2017,"D",93,"Grass","Calycadenia pauciflora",10,11,1,10,11,31
+2017,"D",93,"No Grass","Plantago erecta",74,15,0,0,0,99
+2017,"D",93,"Thatch","Plantago erecta",84,15,0,2,2,99
+2017,"D",93,"Grass","Clarkia purpurea",10,11,1,8,9,30
+2017,"D",93,"Thatch","Clarkia purpurea",19,15,0,10,10,30
+2017,"D",93,"Grass","Plantago erecta",84,15,0,0,0,99
+2017,"D",93,"No Grass","Clarkia purpurea",18,15,2,12,14,30
+2017,"D",93,"No Grass","Lasthenia californica",19,19,4,2,6,100
+2017,"D",93,"Grass","Agoseris heterophylla",85,15,0,0,0,94
+2017,"D",93,"No Grass","Hemizonia congesta",23,15,1,5,6,32
+2017,"D",95,"No Grass","Plantago erecta",58,15,0,0,0,99
+2017,"D",95,"No Grass","Clarkia purpurea",7,12,0,11,11,30
+2017,"D",95,"No Grass","Lasthenia californica",22,17,2,0,2,100
+2017,"D",95,"Thatch","Clarkia purpurea",13,15,0,15,15,30
+2017,"D",95,"Thatch","Agoseris heterophylla",1,1,0,1,1,94
+2017,"D",95,"Thatch","Plantago erecta",32,15,0,0,0,99
+2017,"D",95,"Grass","Plantago erecta",85,15,0,0,0,99
+2017,"D",95,"Grass","Clarkia purpurea",10,10,0,9,9,30
+2017,"D",95,"Thatch","Hemizonia congesta",20,15,4,8,12,32
+2017,"D",95,"No Grass","Agoseris heterophylla",35,17,2,0,2,94
+2017,"D",95,"No Grass","Hemizonia congesta",22,15,3,7,10,32
+2017,"D",95,"Thatch","Lasthenia californica",15,15,4,3,7,100
+2017,"D",95,"Grass","Lasthenia californica",40,15,0,1,1,100
+2017,"D",95,"Grass","Hemizonia congesta",27,15,1,3,4,32
+2017,"D",95,"Grass","Calycadenia pauciflora",15,15,0,15,15,31
+2017,"D",95,"Grass","Agoseris heterophylla",33,19,4,0,4,94
+2017,"D",95,"Thatch","Calycadenia pauciflora",2,2,0,2,2,31
+2017,"D",95,"No Grass","Calycadenia pauciflora",11,11,0,11,11,31
+2017,"C",96,"Thatch","Plantago erecta",39,15,0,0,0,99
+2017,"C",96,"No Grass","Clarkia purpurea",21,15,0,14,14,30
+2017,"C",96,"Grass","Plantago erecta",67,15,0,0,0,99
+2017,"C",96,"No Grass","Lasthenia californica",23,15,0,4,4,100
+2017,"C",96,"Thatch","Calycadenia pauciflora",6,6,2,4,6,31
+2017,"C",96,"No Grass","Calycadenia pauciflora",9,9,0,7,7,31
+2017,"C",96,"Grass","Hemizonia congesta",32,16,1,7,8,32
+2017,"C",96,"Grass","Agoseris heterophylla",53,17,2,11,13,94
+2017,"C",96,"Grass","Calycadenia pauciflora",6,6,1,5,6,31
+2017,"C",96,"No Grass","Hemizonia congesta",26,15,0,8,8,32
+2017,"C",96,"Grass","Clarkia purpurea",7,11,2,8,10,30
+2017,"C",96,"No Grass","Agoseris heterophylla",56,17,2,1,3,94
+2017,"C",96,"Thatch","Agoseris heterophylla",2,2,0,2,2,94
+2017,"C",96,"Thatch","Hemizonia congesta",7,15,0,3,3,32
+2017,"C",96,"No Grass","Plantago erecta",81,15,0,0,0,99
+2017,"C",96,"Thatch","Lasthenia californica",3,3,2,0,2,100
+2017,"C",96,"Grass","Lasthenia californica",36,15,0,2,2,100
+2017,"C",96,"Thatch","Clarkia purpurea",15,15,0,14,14,30
+2017,"D",97,"No Grass","Hemizonia congesta",19,15,0,7,7,32
+2017,"D",97,"No Grass","Calycadenia pauciflora",12,13,0,6,6,31
+2017,"D",97,"Grass","Hemizonia congesta",21,15,0,3,3,32
+2017,"D",97,"Thatch","Hemizonia congesta",7,15,1,10,11,32
+2017,"D",97,"Grass","Plantago erecta",51,15,0,0,0,99
+2017,"D",97,"Thatch","Plantago erecta",28,15,0,0,0,99
+2017,"D",97,"No Grass","Clarkia purpurea",9,9,2,5,7,30
+2017,"D",97,"No Grass","Lasthenia californica",31,15,0,2,2,100
+2017,"D",97,"Thatch","Clarkia purpurea",22,16,1,15,16,30
+2017,"D",97,"Grass","Calycadenia pauciflora",12,12,1,9,10,31
+2017,"D",97,"Thatch","Lasthenia californica",1,1,0,0,0,100
+2017,"D",97,"No Grass","Agoseris heterophylla",61,18,3,7,10,94
+2017,"D",97,"Grass","Clarkia purpurea",13,14,1,13,14,30
+2017,"D",97,"No Grass","Plantago erecta",80,16,1,0,1,99
+2017,"D",97,"Thatch","Calycadenia pauciflora",4,4,0,4,4,31
+2017,"D",97,"Grass","Lasthenia californica",19,15,6,0,6,100
+2017,"D",97,"Grass","Agoseris heterophylla",43,15,0,1,1,94
+2017,"D",97,"Thatch","Agoseris heterophylla",2,2,1,1,2,94
+2017,"C",98,"No Grass","Clarkia purpurea",11,10,3,7,10,30
+2017,"C",98,"Grass","Clarkia purpurea",10,10,4,6,10,30
+2017,"C",98,"Thatch","Hemizonia congesta",6,15,2,7,9,32
+2017,"C",98,"Grass","Plantago erecta",99,15,0,0,0,99
+2017,"C",98,"Grass","Hemizonia congesta",16,15,0,5,5,32
+2017,"C",98,"No Grass","Hemizonia congesta",12,15,0,9,9,32
+2017,"C",98,"Thatch","Calycadenia pauciflora",2,2,0,2,2,31
+2017,"C",98,"No Grass","Calycadenia pauciflora",12,13,0,11,11,31
+2017,"C",98,"Grass","Agoseris heterophylla",43,18,3,4,7,94
+2017,"C",98,"Thatch","Clarkia purpurea",9,11,2,9,11,30
+2017,"C",98,"Thatch","Plantago erecta",20,16,1,0,1,99
+2017,"C",98,"Thatch","Agoseris heterophylla",0,0,0,0,0,94
+2017,"C",98,"Grass","Lasthenia californica",22,15,0,0,0,100
+2017,"C",98,"No Grass","Agoseris heterophylla",23,18,6,4,10,94
+2017,"C",98,"Thatch","Lasthenia californica",5,5,5,0,5,100
+2017,"C",98,"Grass","Calycadenia pauciflora",17,15,2,11,13,31
+2017,"C",98,"No Grass","Plantago erecta",81,15,0,0,0,99
+2017,"C",98,"No Grass","Lasthenia californica",25,15,1,3,4,100
+2017,"D",99,"No Grass","Plantago erecta",68,15,2,5,7,99
+2017,"D",99,"Thatch","Plantago erecta",46,15,1,6,7,99
+2017,"D",99,"Grass","Agoseris heterophylla",73,16,1,0,1,94
+2017,"D",99,"No Grass","Calycadenia pauciflora",11,11,0,4,4,31
+2017,"D",99,"No Grass","Agoseris heterophylla",93,15,0,3,3,94
+2017,"D",99,"Grass","Lasthenia californica",49,16,1,0,1,100
+2017,"D",99,"Thatch","Hemizonia congesta",29,15,1,12,13,32
+2017,"D",99,"No Grass","Lasthenia californica",39,15,0,4,4,100
+2017,"D",99,"Thatch","Agoseris heterophylla",71,15,3,8,11,94
+2017,"D",99,"Thatch","Lasthenia californica",10,10,0,7,7,100
+2017,"D",99,"No Grass","Hemizonia congesta",30,15,0,9,9,32
+2017,"D",99,"Grass","Calycadenia pauciflora",5,5,0,3,3,31
+2017,"D",99,"Grass","Plantago erecta",67,15,0,0,0,99
+2017,"D",99,"Thatch","Calycadenia pauciflora",4,4,1,3,4,31
+2017,"D",99,"No Grass","Clarkia purpurea",30,15,0,8,8,30
+2017,"D",99,"Grass","Clarkia purpurea",16,15,0,14,14,30
+2017,"D",99,"Grass","Hemizonia congesta",7,15,1,9,10,32
+2017,"D",99,"Thatch","Clarkia purpurea",24,15,0,15,15,30
