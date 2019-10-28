@@ -265,6 +265,24 @@ qqnorm(resid(m5))
 qqline(resid(m5), col = 2, lwd = 2, lty = 2)
 summary(m5)
 
+#### Plot RGR v WUE ####
+trait.w$Species.short <- revalue(trait.w$Species, c("Agoseris heterophylla" =  "AGHE", "Calycadenia pauciflora" = "CAPA", "Clarkia purpurea" = "CLPU", "Hemizonia congesta" = "HECO", "Lasthenia californica" = "LACA", "Plantago erecta" = "PLER"))
+
+plot.trait <- ggplot(trait.w, aes(x = D13C.F, y = RGR.la.F)) +
+  theme_classic() +
+  geom_smooth(method = "lm", se = F, col = "black", size = 1) +
+  geom_text(aes(label = Species.short), hjust = .5, vjust = .5) +
+  labs(y = "Relative Growth Rate", x = "Water Use Efficiency") +
+  theme(axis.text = element_text(size = 10), 
+        plot.title = element_text(size = 30, face="bold", vjust = 2),
+        axis.title = element_text(size = 13), 
+        strip.text = element_text(size = 15)) +
+  scale_x_reverse(lim = c(25, 20)) +
+  labs(x = "Carbon isotope discrimination", y = "Relative growth rate")
+  #labs(x = "Carbon isotope discrimination (∆, \u2030)", y = expression(paste("Relative Growth Rate (", cm^{2}, ")"%.%"(", cm^{2}, ")"^{-1}%.%day^{-1})))
+
+ggsave(plot.trait, filename = "Figures/trait.tiff", width = 3, height = 2.7, units = "in", dpi = 600)
+
 #### Plot Germination ####
 
 germ.t.sum <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot2","strat"), na.rm = T)
@@ -282,7 +300,7 @@ plot.germ <- ggplot(germ.t.sum, aes(x = strat, y = p.germ, fill = Subplot2)) +
         axis.title.y = element_text(size = 12), 
         axis.title.x = element_blank(),
         legend.text = element_text(size = 9),
-        legend.position = c(.8, .84),
+        legend.position = c(.77, .84),
         legend.key.size = unit(1.2, 'lines')) +
   labs(y = "Proportion Germinated", x = "Subplot") +
   ylim(0,.85) +
@@ -309,7 +327,7 @@ plot.mort <- ggplot(dem.sum, aes(x = strat, y = p.mort, fill = Subplot)) +
         axis.title.y = element_text(size = 12), 
         axis.title.x = element_blank(),
         legend.text = element_text(size = 9),
-        legend.position = c(.25, .8),
+        legend.position = c(.26, .8),
         legend.key.size = unit(1.2, 'lines')) +
   labs(y = "Mortality", x = "Subplot") +
   scale_fill_viridis_d()
@@ -435,7 +453,7 @@ ggsave(plot.lambda.ST, filename = "Figures/lambda-st.tiff", width = 6, height = 
 #### Spp: Germ ####
 germ.sum.spp <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot2", "strat", "Species"), na.rm = T)
 germ.sum.spp$Subplot <- factor(germ.sum.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-germ.sum.spp$Subplot <- revalue(germ.sum.spp$Subplot, c("Thatch" = "Litter"))
+germ.sum.spp$Subplot <- revalue(germ.sum.spp$Subplot, c("Thatch" = "Litter Addition"))
 
 # Avoiders
 plot.germ.SA <- ggplot(germ.sum.spp[germ.sum.spp$strat == "SA",], aes(x = Species, y = p.germ, fill = Subplot)) +
@@ -450,7 +468,7 @@ plot.germ.SA <- ggplot(germ.sum.spp[germ.sum.spp$strat == "SA",], aes(x = Specie
         axis.title.x = element_blank(),
         strip.text = element_text(size = 15),
         legend.text = element_text(size = 12),
-        legend.position = c(.88, .86),
+        legend.position = c(.86, .88),
         legend.key.size = unit(1, 'lines')) +
   labs(y = "Proportion Germinated", x = "Subplot") +
   ylim(0,1) +
