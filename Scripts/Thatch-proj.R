@@ -152,12 +152,14 @@ dem$Subplot2 <- ifelse(dem$Subplot == "Grass", "No Grass", as.character(dem$Subp
 # summary(m1.t) 
 # (OD <- overdisp(m1.t)$ratio)
 # (new.p <- as.data.frame(2*pnorm(-abs(fixef(m1.t)/(se.fixef(m1.t)*sqrt(OD))))))
-
+m1.t1 <- glmmTMB(cbind(germ.tot, viable-germ.tot) ~ Subplot2 + strat + (1|Plot:Species), family = betabinomial(link = "logit"), dem) 
 m1.t2 <- glmmTMB(cbind(germ.tot, viable-germ.tot) ~ Subplot2 * strat + (1|Plot:Species), family = betabinomial(link = "logit"), dem) 
-summary(m1.t2)
-Anova.glmmTMB(m1.t2, type = "III") 
 
-  # contrasts
+anova(m1.t1, m1.t2)
+
+summary(m1.t2)
+
+# contrasts
 SA.N <- c(1, 0, 0, 0)
 SA.T <- c(1, 1, 0, 0)
 
@@ -191,12 +193,13 @@ summary(glht(m1.t2, linfct = K), test = adjusted("BH"))
 
 #### M2: Mortality ####
 #dem$Subplot <- factor(dem$Subplot, levels = c("Grass", "No Grass", "Thatch"))
-options(contrasts = c("contr.sum", "contr.poly"))
-m2.t <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot * strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
-plot(fitted(m2.t), resid(m2.t))
-summary(m2.t)
-anova(m2.t)
-Anova(m2.t, type = 3)
+m2.t1 <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot + strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
+m2.t2 <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot * strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
+
+anova(m2.t1, m2.t2)
+
+plot(fitted(m2.t1), resid(m2.t1))
+summary(m2.t1)
 
 # contrasts
 SA.N <- c(1, 0, 0, 0, 0, 0)
@@ -223,15 +226,16 @@ summary(glht(m2.t, linfct = K), test = adjusted("BH"))
 # contrast(emmeans(m2.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M3: Seed set ####
+m3.t1 <- lmer(log(n.seed.ind + 1) ~ Subplot + strat + (1|Plot:Species), flo.seed)
+m3.t2 <- lmer(log(n.seed.ind + 1) ~ Subplot * strat + (1|Plot:Species), flo.seed)
+anova(m3.t1, m3.t2)
 
-m3.t <- lmer(log(n.seed.ind + 1) ~ Subplot * strat + (1|Plot:Species), flo.seed)
-plot(fitted(m3.t), resid(m3.t))
-qqnorm(resid(m3.t))
-qqline(resid(m3.t), col = 2, lwd = 2, lty = 2)
-summary(m3.t)
-anova(m3.t)
+plot(fitted(m3.t2), resid(m3.t2))
+qqnorm(resid(m3.t2))
+qqline(resid(m3.t2), col = 2, lwd = 2, lty = 2)
+summary(m3.t2)
 
-summary(glht(m3.t, linfct = K), test = adjusted("BH"))
+summary(glht(m3.t2, linfct = K), test = adjusted("BH"))
 
 # contrast(emmeans(m3.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
 # 
@@ -241,15 +245,16 @@ summary(glht(m3.t, linfct = K), test = adjusted("BH"))
 
 #### M4: Plot Lambda ####
 hist(log(full$L + .7))
+m4.t1 <- lmer(log(L + .7) ~ Subplot + strat + (1|Plot:Species), full)
+m4.t2 <- lmer(log(L + .7) ~ Subplot * strat + (1|Plot:Species), full)
+anova(m4.t1, m4.t2)
 
-m4.t <- lmer(log(L + .7) ~ Subplot * strat + (1|Plot:Species), full)
-plot(fitted(m4.t), resid(m4.t))
-qqnorm(resid(m4.t))
-qqline(resid(m4.t), col = 2, lwd = 2, lty = 2)
-summary(m4.t)
-anova(m4.t)
+plot(fitted(m4.t2), resid(m4.t2))
+qqnorm(resid(m4.t2))
+qqline(resid(m4.t2), col = 2, lwd = 2, lty = 2)
+summary(m4.t2)
 
-summary(glht(m4.t, linfct = K), test = adjusted("BH"))
+summary(glht(m4.t2, linfct = K), test = adjusted("BH"))
 
 # contrast(emmeans(m4.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
 # 
