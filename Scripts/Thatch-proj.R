@@ -71,6 +71,8 @@ PCA.G <- prcomp(trait.w[,c(18, 20)], scale = T) # Greenhouse trait
 PCA.F <- prcomp(trait.w[, c(7, 8)], scale = T) # Field trait
 PCA.s13 <- prcomp(sla.13[, c(2, 3)], scale = T) # Full SLA + D13C field
 
+biplot(PCA.F)
+summary(PCA.F)
 
 trait.w$PC.G <- PCA.G$x[,1] 
 trait.w$PC.F <- PCA.F$x[,1] 
@@ -142,8 +144,8 @@ full$L <- ifelse(full$p.germ == 0, full$L.sb, full$L)
 # full$L <- ifelse(is.na(full$L.sa) == T, full$L.sb, full$L)
 
 ### Calculate elasticity ###
-full$elas.g <- abs(full$p.germ*((1-full$p.mort)*full$n.seed.ind - full$p.surv)/full$L)
-full$elas.F <- abs((full$p.germ*(1-full$p.mort)*full$n.seed.ind)/full$L)
+# full$elas.g <- abs(full$p.germ*((1-full$p.mort)*full$n.seed.ind - full$p.surv)/full$L)
+# full$elas.F <- abs((full$p.germ*(1-full$p.mort)*full$n.seed.ind)/full$L)
 
 #### M1: Germination ####
 dem$Subplot2 <- ifelse(dem$Subplot == "Grass", "No Grass", as.character(dem$Subplot))
@@ -256,11 +258,11 @@ summary(m4.t2)
 
 summary(glht(m4.t2, linfct = K), test = adjusted("BH"))
 
-# contrast(emmeans(m4.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m4.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m4.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
+contrast(emmeans(m4.t2, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m4.t2, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
+
+contrast(emmeans(m4.t2, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M5: Grass Cover ####
 hist(sqrt(grass$cover.g))
@@ -272,28 +274,33 @@ summary(m5)
 
 #### Plot RGR v WUE ####
 trait.w$Species.short <- revalue(trait.w$Species, c("Agoseris heterophylla" =  "AGHE", "Calycadenia pauciflora" = "CAPA", "Clarkia purpurea" = "CLPU", "Hemizonia congesta" = "HECO", "Lasthenia californica" = "LACA", "Plantago erecta" = "PLER"))
+trait.w$strat <- revalue(trait.w$strat, c("SA" = "Acquisitive", "ST" = "Conservative"))
 
-plot.trait <- ggplot(trait.w, aes(x = D13C.F, y = RGR.la.F)) +
+plot.trait <- ggplot(trait.w, aes(x = D13C.F, y = RGR.la.F, col = strat)) +
   theme_classic() +
-  geom_smooth(method = "lm", se = F, col = "black", size = 1) +
-  geom_text(aes(label = Species.short), hjust = .5, vjust = .5) +
-  labs(y = "Relative Growth Rate", x = "Water Use Efficiency") +
-  theme(axis.text = element_text(size = 10), 
-        plot.title = element_text(size = 30, face="bold", vjust = 2),
-        axis.title = element_text(size = 13), 
-        strip.text = element_text(size = 15)) +
-  scale_x_reverse(lim = c(25, 20)) +
-  labs(x = "Carbon isotope discrimination", y = "Relative growth rate")
-  #labs(x = "Carbon isotope discrimination (∆, \u2030)", y = expression(paste("Relative Growth Rate (", cm^{2}, ")"%.%"(", cm^{2}, ")"^{-1}%.%day^{-1})))
+  geom_smooth(method = "lm", se = F, col = "black", size = .7) +
+  geom_point(size = 1.2) +
+  geom_label(aes(label = Species.short), size = 2, nudge_x = .7, label.padding = unit(0.15, "lines"), col = "black") +
+  theme(axis.text = element_text(size = 8),
+        axis.title = element_text(size = 10),
+        legend.position = c(0.78, 0.97),
+        legend.text = element_text(size = 8),
+        legend.title = element_blank(),
+        legend.spacing.y = unit(1.0, 'cm'),
+        legend.key.size = unit(0.5, 'cm'),
+        legend.margin=margin(t = 0, unit='cm')) +
+  scale_x_reverse(lim = c(25, 19.5)) +
+  scale_color_manual(values = c("#009E73", "#E69F00")) +
+  labs(x = "Carbon isotope discrimination\n(∆, \u2030)", y = expression(atop("Relative growth rate", paste("(", cm^{2}, ")"%.%"(", cm^{2}, ")"^{-1}%.%day^{-1})))) 
 
-ggsave(plot.trait, filename = "Figures/trait.tiff", width = 3, height = 2.7, units = "in", dpi = 600)
+ggsave(plot.trait, filename = "Figures/trait.tiff", width = 3, height = 2.5, units = "in", dpi = 600)
 
 #### Plot Germination ####
 
-germ.t.sum <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot2","strat"), na.rm = T)
-germ.t.sum$strat <- revalue(germ.t.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
-germ.t.sum$Subplot2 <- revalue(germ.t.sum$Subplot, c("Thatch" = "Litter Addition"))
-germ.t.sum$Subplot2 <- factor(germ.t.sum$Subplot2, levels = c("No Grass", "Litter Addition"))
+germ.t.sum <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot2", "strat"), na.rm = T)
+germ.t.sum$strat <- revalue(germ.t.sum$strat, c("SA" = "Acquisitive", "ST" = "Conservative"))
+germ.t.sum$Subplot2 <- revalue(germ.t.sum$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
+germ.t.sum$Subplot2 <- factor(germ.t.sum$Subplot2, levels = c("No grass", "Litter addition"))
 
 plot.germ <- ggplot(germ.t.sum, aes(x = strat, y = p.germ, fill = Subplot2)) +
   geom_bar(position = "dodge", stat = "identity") +
@@ -307,7 +314,7 @@ plot.germ <- ggplot(germ.t.sum, aes(x = strat, y = p.germ, fill = Subplot2)) +
         legend.text = element_text(size = 9),
         legend.position = c(.77, .84),
         legend.key.size = unit(1.2, 'lines')) +
-  labs(y = "Proportion Germinated", x = "Subplot") +
+  labs(y = "Germination", x = "Subplot") +
   ylim(0,.85) +
   scale_fill_viridis_d()
 
@@ -318,8 +325,8 @@ ggsave(plot.germ, filename = "Figures/Germ.tiff", width = 3, height = 2.7, units
 dem.sum <- summarySE(dem, measurevar = "p.mort", groupvars = c("Subplot","strat"), na.rm = T)
 
 dem.sum$Subplot <- factor(dem.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-dem.sum$Subplot <- revalue(dem.sum$Subplot, c("Thatch" = "Litter Addition"))
-dem.sum$strat <- revalue(dem.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
+dem.sum$Subplot <- revalue(dem.sum$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
+dem.sum$strat <- revalue(dem.sum$strat,  c("SA" = "Acquisitive", "ST" = "Conservative"))
 
 plot.mort <- ggplot(dem.sum, aes(x = strat, y = p.mort, fill = Subplot)) +
   geom_bar(position = "dodge", stat = "identity") +
@@ -343,8 +350,8 @@ ggsave(plot.mort, filename = "Figures/Mort.tiff", width = 3, height = 2.7, units
 
 flo.seed.sum <- summarySE(flo.seed, measurevar = "n.seed.ind", groupvars = c("Subplot","strat"), na.rm = T)
 flo.seed.sum$Subplot <- factor(flo.seed.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-flo.seed.sum$Subplot <- revalue(flo.seed.sum$Subplot, c("Thatch" = "Litter Addition"))
-flo.seed.sum$strat <- revalue(flo.seed.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
+flo.seed.sum$Subplot <- revalue(flo.seed.sum$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
+flo.seed.sum$strat <- revalue(flo.seed.sum$strat,  c("SA" = "Acquisitive", "ST" = "Conservative"))
 
 plot.seed <- ggplot(flo.seed.sum, aes(x = strat, y = n.seed.ind, fill = Subplot)) +
   geom_bar(position = "dodge", stat = "identity") +
@@ -368,9 +375,9 @@ ggsave(plot.seed, filename = "Figures/Seed.tiff", width = 3, height = 2.7, units
 
 full.t.sum <- summarySE(full, measurevar = "L", groupvars = c("Subplot","strat"), na.rm = T)
 
-full.t.sum$strat <- revalue(full.t.sum$strat, c("SA" = "Stress Avoider", "ST" = "Stress Tolerator"))
+full.t.sum$strat <- revalue(full.t.sum$strat, c("SA" = "Acquisitive", "ST" = "Conservative"))
 full.t.sum$Subplot <- factor(full.t.sum$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-full.t.sum$Subplot <- revalue(full.t.sum$Subplot, c("Thatch" = "Litter Addition"))
+full.t.sum$Subplot <- revalue(full.t.sum$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
 
 # ggplot(full.t.sum, aes(x = Subplot, y = L, fill = strat)) +
 #   geom_bar(position = "dodge", stat = "identity") +
@@ -412,7 +419,7 @@ ggsave(plot.lambda, filename = "Figures/Lambda.tiff", width = 3, height = 2.7, u
 full.sum.spp <- summarySE(full, measurevar = "L", groupvars = c("Subplot", "strat", "Species"), na.rm = T)
 
 full.sum.spp$Subplot <- factor(full.sum.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-full.sum.spp$Subplot <- revalue(full.sum.spp$Subplot, c("Thatch" = "Litter Addition"))
+full.sum.spp$Subplot <- revalue(full.sum.spp$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
 
 # Avoiders
 plot.lambda.SA <- ggplot(full.sum.spp[full.sum.spp$strat == "SA",], aes(x = Species, y = L, fill = Subplot)) +
@@ -430,6 +437,7 @@ plot.lambda.SA <- ggplot(full.sum.spp[full.sum.spp$strat == "SA",], aes(x = Spec
         legend.position = c(.84, .76),
         legend.key.size = unit(1.4, 'lines')) +
   labs(y = "Lambda", x = "Subplot") +
+  ylim(0,40) +
   scale_fill_viridis_d()
 
 ggsave(plot.lambda.SA, filename = "Figures/lambda-sa.tiff", width = 6, height = 3, units = "in", dpi = 600)
@@ -450,7 +458,8 @@ plot.lambda.ST <- ggplot(full.sum.spp[full.sum.spp$strat == "ST",], aes(x = Spec
         legend.text = element_text(size = 12),
         legend.key.size = unit(1.4, 'lines')) +
   labs(y = "Lambda", x = "Subplot") +
-  scale_y_continuous(breaks=c(0,3,6,9)) +
+  #scale_y_continuous(breaks=c(0,3,6,9)) +
+  ylim(0,40) +
   scale_fill_viridis_d()
 
 ggsave(plot.lambda.ST, filename = "Figures/lambda-st.tiff", width = 6, height = 3, units = "in", dpi = 600)
@@ -458,7 +467,7 @@ ggsave(plot.lambda.ST, filename = "Figures/lambda-st.tiff", width = 6, height = 
 #### Spp: Germ ####
 germ.sum.spp <- summarySE(dem, measurevar = "p.germ", groupvars = c("Subplot2", "strat", "Species"), na.rm = T)
 germ.sum.spp$Subplot <- factor(germ.sum.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-germ.sum.spp$Subplot <- revalue(germ.sum.spp$Subplot, c("Thatch" = "Litter Addition"))
+germ.sum.spp$Subplot <- revalue(germ.sum.spp$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
 
 # Avoiders
 plot.germ.SA <- ggplot(germ.sum.spp[germ.sum.spp$strat == "SA",], aes(x = Species, y = p.germ, fill = Subplot)) +
@@ -497,7 +506,7 @@ plot.germ.ST <- ggplot(germ.sum.spp[germ.sum.spp$strat == "ST",], aes(x = Specie
         legend.position = "none",
         legend.key.size = unit(1.2, 'lines')) +
   labs(y = "Proportion Germinated", x = "Subplot") +
-  ylim(0,.85) +
+  ylim(0,1) +
   scale_fill_viridis_d()
 
 ggsave(plot.germ.ST, filename = "Figures/germ-st.tiff", width = 6, height = 3, units = "in", dpi = 600)
@@ -505,7 +514,7 @@ ggsave(plot.germ.ST, filename = "Figures/germ-st.tiff", width = 6, height = 3, u
 #### Spp: Mort ####
 mort.sum.spp <- summarySE(dem, measurevar = "p.mort", groupvars = c("Subplot","strat", "Species"), na.rm = T)
 mort.sum.spp$Subplot <- factor(mort.sum.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-mort.sum.spp$Subplot <- revalue(mort.sum.spp$Subplot, c("Thatch" = "Litter Addition"))
+mort.sum.spp$Subplot <- revalue(mort.sum.spp$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
 
 # Avoiders
 plot.mort.SA <- ggplot(mort.sum.spp[mort.sum.spp$strat == "SA",], aes(x = Species, y = p.mort, fill = Subplot)) +
@@ -523,6 +532,7 @@ plot.mort.SA <- ggplot(mort.sum.spp[mort.sum.spp$strat == "SA",], aes(x = Specie
         legend.position = c(.84, .8),
         legend.key.size = unit(1.2, 'lines')) +
   labs(y = "Mortality", x = "Subplot") +
+  ylim(0,1) +
   scale_fill_viridis_d()
 
 ggsave(plot.mort.SA, filename = "Figures/mort-sa.tiff", width = 6, height = 3, units = "in", dpi = 600)
@@ -552,7 +562,7 @@ ggsave(plot.mort.ST, filename = "Figures/mort-st.tiff", width = 6, height = 3, u
 
 flo.seed.spp <- summarySE(flo.seed, measurevar = "n.seed.ind", groupvars = c("Subplot","strat", "Species"), na.rm = T)
 flo.seed.spp$Subplot <- factor(flo.seed.spp$Subplot, levels = c("No Grass", "Grass", "Thatch"))
-flo.seed.spp$Subplot <- revalue(flo.seed.spp$Subplot, c("Thatch" = "Litter Addition"))
+flo.seed.spp$Subplot <- revalue(flo.seed.spp$Subplot, c("Thatch" = "Litter addition", "No Grass" = "No grass"))
 
 # Avoider
 plot.seed.SA <- ggplot(flo.seed.spp[flo.seed.spp$strat == "SA",], aes(x = Species, y = n.seed.ind, fill = Subplot)) +
@@ -570,6 +580,7 @@ plot.seed.SA <- ggplot(flo.seed.spp[flo.seed.spp$strat == "SA",], aes(x = Specie
         legend.position = c(.84, .8),
         legend.key.size = unit(1.2, 'lines')) +
   labs(y = "Seeds per individual", x = "Subplot") +
+  ylim(0,60) +
   scale_fill_viridis_d()
 
 ggsave(plot.seed.SA, filename = "Figures/seed-sa.tiff", width = 6, height = 3, units = "in", dpi = 600)
@@ -590,36 +601,37 @@ plot.seed.ST <- ggplot(flo.seed.spp[flo.seed.spp$strat == "ST",], aes(x = Specie
         legend.position = "none",
         legend.key.size = unit(1.2, 'lines')) +
   labs(y = "Seeds per individual", x = "Subplot") +
+  ylim(0,60) +
   scale_fill_viridis_d()
 
 ggsave(plot.seed.ST, filename = "Figures/seed-st.tiff", width = 6, height = 3, units = "in", dpi = 600)
 
 #### Elasticity Table ####
-full.elas <- gather(full[,c(2, 4:6, 23, 24)], key = "stage", value = "elas", -c(Plot, Species, Subplot, strat), na.rm = T)
-
-ggplot(full.elas, aes(x = strat, y = elas, fill = stage)) +
-  geom_boxplot() +
-  facet_wrap(~Subplot)
-
-hist((full.elas$elas + 1)^(1/2))
-
-m.elas <- lmer(sqrt(elas + 1) ~ stage + (1|Plot:Species), data = full.elas[full.elas$strat == "SA" & full.elas$Subplot == "Thatch",]) # SA sig more elastic wrt fecundity... I think
-plot(fitted(m.elas), resid(m.elas))
-qqnorm(resid(m.elas))
-qqline(resid(m.elas), col = 2, lwd = 2, lty = 2)
-summary(m.elas)
-
-full.elas.sum <- ddply(full, .(Subplot, strat), summarize, se.eg = se(elas.g, na.rm = T), se.eF = se(elas.F, na.rm = T), elas.g = mean(elas.g, na.rm = T), elas.F = mean(elas.F, na.rm = T))
-
-full.elas.sum
-
-ggplot(full.elas.sum, aes(x = Subplot, y = elas.F)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = elas.F - se.eF, ymax = elas.F + se.eF), width = 0.02) +
-  facet_wrap(~strat)
-
-ggplot(full.elas.sum, aes(x = Subplot, y = elas.g)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = elas.g - se.eg, ymax = elas.g + se.eg), width = 0.02) +
-  facet_wrap(~strat)
-
+# full.elas <- gather(full[,c(2, 4:6, 23, 24)], key = "stage", value = "elas", -c(Plot, Species, Subplot, strat), na.rm = T)
+# 
+# ggplot(full.elas, aes(x = strat, y = elas, fill = stage)) +
+#   geom_boxplot() +
+#   facet_wrap(~Subplot)
+# 
+# hist((full.elas$elas + 1)^(1/2))
+# 
+# m.elas <- lmer(sqrt(elas + 1) ~ stage + (1|Plot:Species), data = full.elas[full.elas$strat == "SA" & full.elas$Subplot == "Thatch",]) # SA sig more elastic wrt fecundity... I think
+# plot(fitted(m.elas), resid(m.elas))
+# qqnorm(resid(m.elas))
+# qqline(resid(m.elas), col = 2, lwd = 2, lty = 2)
+# summary(m.elas)
+# 
+# full.elas.sum <- ddply(full, .(Subplot, strat), summarize, se.eg = se(elas.g, na.rm = T), se.eF = se(elas.F, na.rm = T), elas.g = mean(elas.g, na.rm = T), elas.F = mean(elas.F, na.rm = T))
+# 
+# full.elas.sum
+# 
+# ggplot(full.elas.sum, aes(x = Subplot, y = elas.F)) +
+#   geom_point() +
+#   geom_errorbar(aes(ymin = elas.F - se.eF, ymax = elas.F + se.eF), width = 0.02) +
+#   facet_wrap(~strat)
+# 
+# ggplot(full.elas.sum, aes(x = Subplot, y = elas.g)) +
+#   geom_point() +
+#   geom_errorbar(aes(ymin = elas.g - se.eg, ymax = elas.g + se.eg), width = 0.02) +
+#   facet_wrap(~strat)
+# 
