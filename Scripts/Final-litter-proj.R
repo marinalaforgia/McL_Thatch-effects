@@ -11,7 +11,6 @@ library(ggplot2)
 library(lme4)
 library(lmerTest)
 library(reshape2)
-library(emmeans)
 library(multcomp)
 library(glmmTMB)
 library(arm)
@@ -23,19 +22,16 @@ library(car)
 ###
 # Grass
 ###
-grass <- read.csv("Data/Post-Processing/grass-cover.csv")
+grass <- read.csv("Data/Post-Processing/grass-litter-cover.csv")
 names(grass)[3] <- "cover.g"
-grass <- filter(grass, Year == 2017, Treat.Code == "C")
-treat <- read.csv("Data/Marina-Treatment-30.csv")
 
 ###
 # Germ and mortality data
 ###
 
-dem <- read.csv("Data/Post-Processing/dem-data-17.csv")
+dem <- read.csv("Data/Post-Processing/dem-litter-17.csv")
 dem <- merge(dem, grass, by = c("Year", "Plot", "Subplot", "Treat.Code"), all.x = T)
 dem <- dem[, -c(8,9,12)] # get rid of extra columns
-dem <- filter(dem, Year == 2017, Treat.Code == "C")
 dem$Subplot <- factor(dem$Subplot, levels = c("No Grass", "Grass", "Thatch"))
 dem$p.mort <- dem$tot.mort/dem$germ.proj
 dem$p.germ <- dem$germ.tot/dem$viable
@@ -44,8 +40,7 @@ dem$p.germ <- dem$germ.tot/dem$viable
 # Flowering/seed set data 
 ###
 
-flo.seed <- read.csv("Data/Post-Processing/final-flo-seed.csv")
-flo.seed <- filter(flo.seed, Year == 2017, Treat.Code == "C")
+flo.seed <- read.csv("Data/Post-Processing/final-litter-flo-seed.csv")
 flo.seed$Subplot <- factor(flo.seed$Subplot, levels = c("No Grass", "Grass", "Thatch"))
 flo.seed$n.seed.ind <- flo.seed$n.seed.ind * flo.seed$p.viable # adjust for viability
 #flo.seed <- flo.seed[,-16]
@@ -54,8 +49,7 @@ flo.seed$Subplot <- factor(flo.seed$Subplot, levels = c("No Grass", "Grass", "Th
 ###
 # Seed survival
 ###
-sb <- read.csv("Data/Post-Processing/seed-carryover-plot.csv")[,c(1:9)]
-sb <- filter(sb, Year == 2017, Treat.Code == "C")
+sb <- read.csv("Data/Post-Processing/seed-surv-litter.csv")[,c(1:9)]
 names(sb)[1] <- "Species"
 sb <- sb[,-c(5,6)]
 
@@ -152,7 +146,7 @@ dem$Subplot2 <- ifelse(dem$Subplot == "Grass", "No Grass", as.character(dem$Subp
 # m1.t <- glmer(cbind(germ.tot, viable-germ.tot) ~ Subplot2 * strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
 # plot(fitted(m1.t), resid(m1.t))
 # summary(m1.t) 
-# (OD <- overdisp(m1.t)$ratio)
+# (OD <- overdisp(m1.t)$ratio) # deprecated?
 # (new.p <- as.data.frame(2*pnorm(-abs(fixef(m1.t)/(se.fixef(m1.t)*sqrt(OD))))))
 m1.t1 <- glmmTMB(cbind(germ.tot, viable-germ.tot) ~ Subplot2 + strat + (1|Plot:Species), family = betabinomial(link = "logit"), dem) 
 m1.t2 <- glmmTMB(cbind(germ.tot, viable-germ.tot) ~ Subplot2 * strat + (1|Plot:Species), family = betabinomial(link = "logit"), dem) 
@@ -187,21 +181,42 @@ modelparm.glmmTMB <- function (model, coef. = function(x) fixef(x)[[component]],
 
 summary(glht(m1.t2, linfct = K), test = adjusted("BH"))  
 
-# contrast(emmeans(m1.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m1.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m1.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
-
 #### M2: Mortality ####
 #dem$Subplot <- factor(dem$Subplot, levels = c("Grass", "No Grass", "Thatch"))
 m2.t1 <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot + strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
 m2.t2 <- glmer(cbind(tot.mort, germ.proj-tot.mort) ~ Subplot * strat + (1|Plot:Species), family = binomial, data = dem, glmerControl(calc.derivs = F))
-
 anova(m2.t1, m2.t2)
 
 plot(fitted(m2.t1), resid(m2.t1))
 summary(m2.t1)
+
+# contrasts
+SA.N <- c(1, 0, 0, 0)
+SA.G <- c(1, 1, 0, 0)
+SA.T <- c(1, 0, 1, 0)
+
+ST.N <- c(1, 0, 0, 1)
+ST.G <- c(1, 1, 0, 1)
+ST.T <- c(1, 0, 1, 1)
+
+K <- rbind("ST.G - ST.N" = ST.G - ST.N,
+           "ST.T - ST.N" = ST.T - ST.N,
+           "ST.T - ST.G" = ST.T - ST.G,
+           "SA.G - SA.N" = SA.G - SA.N,
+           "SA.T - SA.N" = SA.T - SA.N,
+           "SA.T - SA.G" = SA.T - SA.G)
+
+summary(glht(m2.t1, linfct = K), test = adjusted("BH"))
+
+#### M3: Seed set ####
+m3.t1 <- lmer(log(n.seed.ind + 1) ~ Subplot + strat + (1|Plot:Species), flo.seed)
+m3.t2 <- lmer(log(n.seed.ind + 1) ~ Subplot * strat + (1|Plot:Species), flo.seed)
+anova(m3.t1, m3.t2)
+
+plot(fitted(m3.t2), resid(m3.t2))
+qqnorm(resid(m3.t2))
+qqline(resid(m3.t2), col = 2, lwd = 2, lty = 2)
+summary(m3.t2)
 
 # contrasts
 SA.N <- c(1, 0, 0, 0, 0, 0)
@@ -219,31 +234,7 @@ K <- rbind("ST.G - ST.N" = ST.G - ST.N,
            "SA.T - SA.N" = SA.T - SA.N,
            "SA.T - SA.G" = SA.T - SA.G)
 
-summary(glht(m2.t, linfct = K), test = adjusted("BH"))
-
-# contrast(emmeans(m2.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m2.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m2.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
-
-#### M3: Seed set ####
-m3.t1 <- lmer(log(n.seed.ind + 1) ~ Subplot + strat + (1|Plot:Species), flo.seed)
-m3.t2 <- lmer(log(n.seed.ind + 1) ~ Subplot * strat + (1|Plot:Species), flo.seed)
-anova(m3.t1, m3.t2)
-
-plot(fitted(m3.t2), resid(m3.t2))
-qqnorm(resid(m3.t2))
-qqline(resid(m3.t2), col = 2, lwd = 2, lty = 2)
-summary(m3.t2)
-
 summary(glht(m3.t2, linfct = K), test = adjusted("BH"))
-
-# contrast(emmeans(m3.t, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m3.t, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
-# 
-# contrast(emmeans(m3.t, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M4: Plot Lambda ####
 hist(log(full$L + .7))
@@ -257,12 +248,6 @@ qqline(resid(m4.t2), col = 2, lwd = 2, lty = 2)
 summary(m4.t2)
 
 summary(glht(m4.t2, linfct = K), test = adjusted("BH"))
-
-contrast(emmeans(m4.t2, ~ Subplot | strat), interaction = "revpairwise", adjust = "FDR")
-
-contrast(emmeans(m4.t2, ~ strat:Subplot), interaction = "revpairwise", adjust = "FDR")
-
-contrast(emmeans(m4.t2, ~ strat | Subplot), interaction = "revpairwise", adjust = "FDR")
 
 #### M5: Grass Cover ####
 hist(sqrt(grass$cover.g))
@@ -605,33 +590,3 @@ plot.seed.ST <- ggplot(flo.seed.spp[flo.seed.spp$strat == "ST",], aes(x = Specie
   scale_fill_viridis_d()
 
 ggsave(plot.seed.ST, filename = "Figures/seed-st.tiff", width = 6, height = 3, units = "in", dpi = 600)
-
-#### Elasticity Table ####
-# full.elas <- gather(full[,c(2, 4:6, 23, 24)], key = "stage", value = "elas", -c(Plot, Species, Subplot, strat), na.rm = T)
-# 
-# ggplot(full.elas, aes(x = strat, y = elas, fill = stage)) +
-#   geom_boxplot() +
-#   facet_wrap(~Subplot)
-# 
-# hist((full.elas$elas + 1)^(1/2))
-# 
-# m.elas <- lmer(sqrt(elas + 1) ~ stage + (1|Plot:Species), data = full.elas[full.elas$strat == "SA" & full.elas$Subplot == "Thatch",]) # SA sig more elastic wrt fecundity... I think
-# plot(fitted(m.elas), resid(m.elas))
-# qqnorm(resid(m.elas))
-# qqline(resid(m.elas), col = 2, lwd = 2, lty = 2)
-# summary(m.elas)
-# 
-# full.elas.sum <- ddply(full, .(Subplot, strat), summarize, se.eg = se(elas.g, na.rm = T), se.eF = se(elas.F, na.rm = T), elas.g = mean(elas.g, na.rm = T), elas.F = mean(elas.F, na.rm = T))
-# 
-# full.elas.sum
-# 
-# ggplot(full.elas.sum, aes(x = Subplot, y = elas.F)) +
-#   geom_point() +
-#   geom_errorbar(aes(ymin = elas.F - se.eF, ymax = elas.F + se.eF), width = 0.02) +
-#   facet_wrap(~strat)
-# 
-# ggplot(full.elas.sum, aes(x = Subplot, y = elas.g)) +
-#   geom_point() +
-#   geom_errorbar(aes(ymin = elas.g - se.eg, ymax = elas.g + se.eg), width = 0.02) +
-#   facet_wrap(~strat)
-# 

@@ -7,12 +7,11 @@ Invasive species act as a filter on the native community, leading to shifts in s
 
 ## Data & Analysis
 
-The script used to generate the project's analysis is titled "Thatch-proj.R" and found in the "Scripts" folder. To run this script, the following post-processing data files are needed:
+The script used to generate the project's analysis is titled "Final-litter-proj.R" and found in the "Scripts" folder. To run this script, the following post-processing data files are needed:
 
-* __grass-cover.csv__: data on grass cover per subplot; not ultimately used
-* __Marina-Treatment-30.csv__: experimental design
-* __dem-data-17.csv__: census data from 2017
-* __final-flo-seed.csv__: seed set and flowering data, both years
-* __seed-carryover-plot.csv__: seed bag data, both years
+* __grass-litter-cover.csv__: data on grass cover per subplot
+* __dem-litter-17.csv__: census data
+* __final-litter-flo-seed.csv__: seed set and flowering data
+* __seed-surv-litter.csv__: seed bag data
 * __final-traits-w.csv__: trait data
 
